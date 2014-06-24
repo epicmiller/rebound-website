@@ -92,6 +92,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-express-server');
 
     grunt.registerTask('dev', [ 'clean', 'handlebars:compile', 'compass:dev', 'express:dev', 'watch' ])
-    grunt.registerTask('prod', [ 'clean', 'handlebars:compile', 'compass:prod', 'express:prod' ])
+    grunt.registerTask('prod', [ 'clean', 'handlebars:compile', 'compass:prod' ])
 
 }
