@@ -62,21 +62,21 @@ module.exports = function(grunt) {
           },
           dev: {
             options: {
-              script: './app.js',
+              script: './rebound.js',
               node_env: 'dev',
               port: 4001
             }
           },
           prod: {
             options: {
-              script: './app.js',
+              script: './rebound.js',
               node_env: 'production',
               port: 4001
             }
           },
           test: {
             options: {
-              script: './app.js'
+              script: './rebound.js'
             }
           }
         }
@@ -88,6 +88,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-express-server');
 
     grunt.registerTask('dev', [ 'handlebars:compile', 'compass:dev', 'express:dev', 'watch' ])
-    grunt.registerTask('prod', [ 'handlebars:compile', 'compass:prod', 'express:prod', 'watch' ])
+    grunt.registerTask('prod', [ 'handlebars:compile', 'compass:prod', 'express:prod' ])
 
 }
