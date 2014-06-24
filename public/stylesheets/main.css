@@ -1,59 +1,38 @@
-/*
-Syntax error: Illegal nesting: Only properties may be nested beneath properties.
-        on line 8 of /Users/adammiller1/rebound-website/scss/main.scss
-
-Backtrace:
-/Users/adammiller1/rebound-website/scss/main.scss:8
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:13:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `map'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:29:in `visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:39:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:15:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `map'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:29:in `visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:39:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:15:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `map'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:29:in `visit_children'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `block in visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:36:in `visit_root'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:37:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/check_nesting.rb:15:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/visitors/base.rb:24:in `visit'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/tree/root_node.rb:19:in `render'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/engine.rb:315:in `_render'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/sass-3.2.19/lib/sass/engine.rb:262:in `render'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:139:in `block (2 levels) in compile'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:126:in `timed'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:138:in `block in compile'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/logger.rb:45:in `red'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:137:in `compile'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:118:in `compile_if_required'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:103:in `block (2 levels) in run'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:101:in `each'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:101:in `block in run'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:126:in `timed'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/compiler.rb:100:in `run'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/commands/update_project.rb:45:in `perform'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/commands/base.rb:18:in `execute'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/commands/project_base.rb:19:in `execute'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/exec/sub_command_ui.rb:43:in `perform!'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/lib/compass/exec/sub_command_ui.rb:15:in `run!'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/bin/compass:30:in `block in <top (required)>'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/bin/compass:44:in `call'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/gems/compass-0.12.6/bin/compass:44:in `<top (required)>'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/bin/compass:23:in `load'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/bin/compass:23:in `<main>'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/bin/ruby_executable_hooks:15:in `eval'
-/Users/adammiller1/.rvm/gems/ruby-2.0.0-p481/bin/ruby_executable_hooks:15:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Syntax error: Illegal nesting: Only properties may be nested beneath properties.\A         on line 8 of /Users/adammiller1/rebound-website/scss/main.scss"; }
+/* line 1, ../../scss/main.scss */
+html {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+}
+/* line 9, ../../scss/main.scss */
+html body {
+  background-color: #EFDFDF;
+  border-top: 3px solid #BC2222;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+}
+/* line 20, ../../scss/main.scss */
+html body nav {
+  text-align: center;
+}
+/* line 23, ../../scss/main.scss */
+html body nav ul {
+  list-style: none;
+}
+/* line 25, ../../scss/main.scss */
+html body nav ul img {
+  width: 500px;
+  position: fixed;
+  top: 100px;
+  margin-top: -50px;
+  margin-left: -250px;
+}
