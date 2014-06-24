@@ -27,6 +27,6 @@
     "express3-handlebars": "*"
   },
   "devDependencies": {
-    "grunt-compass": "~0.8.0"
+    "grunt-compass": "~0.3.9"
   }
 }
