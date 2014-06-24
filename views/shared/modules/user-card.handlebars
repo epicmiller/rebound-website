@@ -1,0 +1,64 @@
+{{#each users}}
+{{@index}}
+  {@math key="{$idx}" method="mod" operand="12"}
+    {@eq value=0}
+      <div class="users-list">
+    {/eq}
+  {/math}
+
+  {@math key="{$idx}" method="mod" operand="6"}
+    {@eq value=0}
+      <div class="six-users">
+    {/eq}
+  {/math}
+
+  {@math key="{$idx}" method="mod" operand="12"}
+    {@eq value=0}
+      <div class="four-users">
+    {/eq}
+    {@eq value=8}
+      <div class="four-users">
+    {/eq}
+  {/math}
+
+  {@math key="{$idx}" method="mod" operand="2"}
+    {@eq value=0}
+      <div class="two-users">
+    {/eq}
+  {/math}
+
+  <a href="/profile/{{uid}}" class="user-card">
+    <img src="{{image}}" alt="{{name}}">
+    <h3 class="user-name small-text sans-serif">{{name}}</h3>
+    <p class="user-school x-small-text dark-text">{{school}}</p>
+    <p class="user-goal serif"><span>${{raised}}</span> of ${{goal}}</p>
+    <p class="user-tagline x-small-text serif">"{{tagline}}"</p>
+    <div class="user-bar"><span style="width:{{percent}}"></span></div>
+  </a>
+
+  {@math key="{$idx}" method="mod" operand="2"}
+    {@eq value=1}
+      </div>
+    {/eq}
+  {/math}
+
+  {@math key="{$idx}" method="mod" operand="12"}
+    {@eq value=3}
+      </div>
+    {/eq}
+    {@eq value=11}
+      </div>
+    {/eq}
+  {/math}
+  {@math key="{$idx}" method="mod" operand="6"}
+    {@eq value=5}
+      </div>
+    {/eq}
+  {/math}
+  {! Close users-list !}
+  {@math key="{$idx}" method="mod" operand="12"}
+    {@eq value=11}
+      </div>
+    {/eq}
+  {/math}
+{{/each}}

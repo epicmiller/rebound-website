@@ -1,0 +1,82 @@
+<section class="banner">
+  <div class="wrapper">
+    <img src="{{> "modules/logo" }}" class="logo" alt="Collegia Logo">
+    <h1 class="title">Collegia</h1>
+    <h2 class="sub-title large-header">Let's end student debt together</h2>
+    <form action="/" id="email-signup">
+      <input type="email" placeholder="Enter your email here">
+      <input type="submit" value="Keep me informed!">
+    </form>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <div class="wrapper">
+    <h3 class="sub-title">The Collegia Movement</h3>
+    <ol>
+      <li class="step">
+        <span class="number large-header">1</span>
+        <h4>Choose a Student</h4>
+        <p>Students and recent graduates sign up and set a fundraising goal for their campaign. Their profiles are showcased on our site to browse.</p>
+      </li>
+      <li class="step">
+        <span class="number large-header">2</span>
+        <h4>Make a Contribution</h4>
+        <p>Give your contribution directly to a student, or describe the type of recipients you want to support, and we'll make sure the funds get to them.</p>
+      </li>
+      <li class="step">
+        <span class="number large-header">3</span>
+        <h4>Kickstart A Future</h4>
+        <p>When the student meets their goal, or their campaign ends, funds from  students' accounts are paid directly to their loan or college.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="users-youre-helping">
+  <div class="wrapper">
+    <h3 class="sub-title">Students you're helping</h3>
+      {{>modules/user-card pageData}}
+    <a href="/discover" class="button light">View more students</a>
+  </div>
+</section>
+
+<section class="faces-of-debt">
+  <div class="wrapper">
+    <h3 class="sub-title">The Faces of Student Debt</h3>
+    <ul class="story-viewer">
+      <li class="story active">
+        <img src="/images/splash/stories/victoria.png" alt="Picture of Victoria">
+        <blockquote>"Graduating from nursing school was my dream. Now that I am a nurse, I'm able to give back to the community. Paying off my student loans would allow me to restart my life debt-free."</blockquote>
+        <p> &mdash; Victoria, Bachelor of Science in Nursing</p>
+      </li>
+      <li class="story">
+        <img src="/images/splash/stories/victoria.png" alt="Picture of Victoria">
+        <blockquote>"Graduating from nursing school was my dream. Now that I am a nurse, I'm able to give back to the community. Paying off my student loans would allow me to restart my life debt-free."</blockquote>
+        <p> &mdash; Victoria, Bachelor of Science in Nursing</p>
+      </li>
+      <li class="story">
+        <img src="/images/splash/stories/victoria.png" alt="Picture of Victoria">
+        <blockquote>"Graduating from nursing school was my dream. Now that I am a nurse, I'm able to give back to the community. Paying off my student loans would allow me to restart my life debt-free."</blockquote>
+        <p> &mdash; Victoria, Bachelor of Science in Nursing</p>
+      </li>
+      <li class="story">
+        <img src="/images/splash/stories/victoria.png" alt="Picture of Victoria">
+        <blockquote>"Graduating from nursing school was my dream. Now that I am a nurse, I'm able to give back to the community. Paying off my student loans would allow me to restart my life debt-free."</blockquote>
+        <p> &mdash; Victoria, Bachelor of Science in Nursing</p>
+      </li>
+      <li class="story">
+        <img src="/images/splash/stories/victoria.png" alt="Picture of Victoria">
+        <blockquote>"Graduating from nursing school was my dream. Now that I am a nurse, I'm able to give back to the community. Paying off my student loans would allow me to restart my life debt-free."</blockquote>
+        <p> &mdash; Victoria, Bachelor of Science in Nursing</p>
+      </li>
+    </ul>
+    <ul class="story-selector">
+      <li><input type="radio" name="stories" id="story-1" checked><label class="story-button" for="story-1"></label></li>
+      <li><input type="radio" name="stories" id="story-2"><label class="story-button" for="story-2"></label></li>
+      <li><input type="radio" name="stories" id="story-3"><label class="story-button" for="story-3"></label></li>
+      <li><input type="radio" name="stories" id="story-4"><label class="story-button" for="story-4"></label></li>
+      <li><input type="radio" name="stories" id="story-5"><label class="story-button" for="story-5"></label></li>
+    </ul>
+  </div>
+</section>

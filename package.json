@@ -1,0 +1,32 @@
+{
+  "name": "Rebound-Js-Website",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "~4.0.0",
+    "compression": "~1.0.6",
+    "serve-favicon": "*",
+    "morgan": "*",
+    "errorhandler": "*",
+    "htmlbars": "*",
+    "node-sass": "*",
+    "consolidate": "*",
+    "node-minify": "*",
+    "cookie-parser": "*",
+    "body-parser": "*",
+    "method-override": "*",
+    "hbs": "*",
+    "grunt": "*",
+    "grunt-contrib-handlebars": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-express-server": "*",
+    "node-compass": "0.2.3",
+    "express3-handlebars": "*"
+  },
+  "devDependencies": {
+    "grunt-compass": "~0.8.0"
+  }
+}
