@@ -1,1 +1,37 @@
-html{position:absolute;top:0;left:0;right:0;bottom:0;margin:0;padding:0}html body{background-color:#EFDFDF;border-top:3px solid #BC2222;position:absolute;top:0;left:0;right:0;bottom:0;margin:0;padding:0}html body nav{text-align:center}html body nav ul{list-style:none}html body nav ul img{width:500px;position:fixed;top:100px;margin-top:-50px;margin-left:-250px}
+/* line 1, ../../scss/main.scss */
+html {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+}
+/* line 9, ../../scss/main.scss */
+html body {
+  background-color: #EFDFDF;
+  border-top: 3px solid #BC2222;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+}
+/* line 19, ../../scss/main.scss */
+html body nav {
+  text-align: center;
+}
+/* line 22, ../../scss/main.scss */
+html body nav ul {
+  list-style: none;
+}
+/* line 24, ../../scss/main.scss */
+html body nav ul img {
+  width: 500px;
+  position: fixed;
+  top: 100px;
+  margin-top: -50px;
+  margin-left: -250px;
+}
