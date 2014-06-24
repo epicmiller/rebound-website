@@ -6,6 +6,9 @@ module.exports = function(grunt) {
         TEMPLATES_OUTPUT_FILENAME = "compiled_templates.js";  // don't forget the .js
 
     grunt.initConfig({
+        clean: {
+          css:  ["public/stylesheets"],  // ES6 files are first consolidated in tmp
+        },
         watch: {
             compass: {
                 files: ['./scss/**/*.scss'],
@@ -85,9 +88,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-compass');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-express-server');
 
-    grunt.registerTask('dev', [ 'handlebars:compile', 'compass:dev', 'express:dev', 'watch' ])
-    grunt.registerTask('prod', [ 'handlebars:compile', 'compass:prod', 'express:prod' ])
+    grunt.registerTask('dev', [ 'clean', 'handlebars:compile', 'compass:dev', 'express:dev', 'watch' ])
+    grunt.registerTask('prod', [ 'clean', 'handlebars:compile', 'compass:prod', 'express:prod' ])
 
 }
