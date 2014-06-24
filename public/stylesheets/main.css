@@ -1,1 +1,20 @@
-body{background-color:blue}body nav{text-align:center}body nav ul{list-style:none}body nav ul img{width:500px;position:fixed;top:33%;margin-top:-50px;margin-left:-250px}
+/* line 1, ../../scss/main.scss */
+body {
+  background-color: #EFDFDF;
+}
+/* line 5, ../../scss/main.scss */
+body nav {
+  text-align: center;
+}
+/* line 8, ../../scss/main.scss */
+body nav ul {
+  list-style: none;
+}
+/* line 10, ../../scss/main.scss */
+body nav ul img {
+  width: 500px;
+  position: fixed;
+  top: 33%;
+  margin-top: -50px;
+  margin-left: -250px;
+}
