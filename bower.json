@@ -1,0 +1,36 @@
+{
+  "name": "Rebound Website",
+  "version": "0.0.1",
+  "homepage": "https://www.reboundjs.com",
+  "authors": [
+    "Adam Miller <adam@pages.me>"
+  ],
+  "description": "Rebound Website",
+  "main": "rebound.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "component framework",
+    "data bound",
+    "htmlbars",
+    "backbone"
+  ],
+  "license": "Private",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "public/javascripts/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "2.1.1",
+    "underscore": "1.6.0",
+    "requirejs": "~2.1.14",
+    "almond": "0.2.9",
+    "fontawesome": "4.3.0",
+    "reboundjs": "0.0.58"
+  }
+}

@@ -15,8 +15,8 @@ module.exports = function(grunt) {
                 tasks: ['compass:dev']
             },
             handlebars: {
-                files: [TEMPLATES_LOCATION + '**/*' + TEMPLATES_EXTENSION],
-                tasks: ['handlebars:compile']
+                files: [TEMPLATES_LOCATION + '**/*'],
+                tasks: ['rebound:compile']
             },
             express: {
               files:  [ './routes/**/*.js', './bin/*', './app.js' ],
@@ -59,6 +59,16 @@ module.exports = function(grunt) {
              environment: 'dev'
           }
         },
+        rebound: {
+          compile:{
+            options: {
+              baseUrl: 'views/',
+              baseDest: 'templates/'
+            },
+            src: ['views/**/*.html', '!views/layouts/**'],
+            dest: 'public/templates'
+          }
+        },
         express: {
           options: {
             // Override defaults here
@@ -90,8 +100,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-rebound');
 
-    grunt.registerTask('dev', [ 'clean', 'handlebars:compile', 'compass:dev', 'express:dev', 'watch' ])
-    grunt.registerTask('prod', [ 'clean', 'handlebars:compile', 'compass:prod' ])
+    grunt.registerTask('build', [ 'clean', 'rebound:compile', 'compass:dev', 'express:dev', 'watch' ])
+    grunt.registerTask('dev', [ 'build', 'watch' ])
+    grunt.registerTask('prod', [ 'build' ])
 
 }

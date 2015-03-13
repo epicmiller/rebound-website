@@ -1,0 +1,40 @@
+{
+  "name": "reboundjs",
+  "version": "0.0.58",
+  "homepage": "https://github.com/epicmiller/rebound",
+  "authors": [
+    "Adam Miller <adam@pages.me>"
+  ],
+  "description": "Automatic data binding for Backbone using HTMLBars.",
+  "main": "rebound.runtime.js",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals"
+  ],
+  "keywords": [
+    "Backbone",
+    "HTMLBars",
+    "Framework",
+    "Data",
+    "Binding",
+    "MVC"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.0.58",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.58",
+    "commit": "5741540a5bc69f11bce891f051dcc860085e1508"
+  },
+  "_source": "git://github.com/epicmiller/reboundjs-dist.git",
+  "_target": "0.0.58",
+  "_originalSource": "reboundjs"
+}

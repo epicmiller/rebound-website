@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "grunt dev"
   },
   "dependencies": {
     "express": "~4.0.0",
@@ -23,6 +23,7 @@
     "grunt-contrib-handlebars": "*",
     "grunt-contrib-watch": "*",
     "grunt-express-server": "*",
+    "grunt-rebound": "0.1.48",
     "node-compass": "0.2.3",
     "express3-handlebars": "*"
   },

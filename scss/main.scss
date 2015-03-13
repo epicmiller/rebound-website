@@ -1,3 +1,6 @@
+@import "lib";
+@import "prism";
+
 html {
   position: absolute;
   top: 0;
@@ -8,7 +11,7 @@ html {
   padding: 0;
 
   body{
-    background-color: #EFDFDF;
+    background-color: #f9f6f6;
     border-top: 3px solid #BC2222;
     position: absolute;
     top:0;
@@ -17,20 +20,68 @@ html {
     margin: 0;
     padding: 0;
 
-    nav{
-        text-align:center;
+    font-family: "Open Sans", sans-serif;
 
-      ul{
-        list-style: none;
-        img{
-          width: 500px;
-          position: fixed;
-          top: 100px;
-          margin-top: -50px;
-          margin-left: -250px;
-        }
+    a{
+      color: $red;
+      text-decoration: none;
+      transition: border-color .1s;
+      border-bottom: 1px solid transparent;
+      &:hover{
+        border-color: $red;
       }
     }
 
+    :not(pre) > code[class*="language-"]{
+      padding: 12px 30px !important;
+    }
+
+    button, a.button{
+      background-color: $red;
+      color: $white;
+      padding: 7px 15px;
+      border-radius: 5px;
+      transition: box-shadow .15s;
+      box-shadow: inset 0 -100px 0 0 rgba(0,0,0,0);
+
+      &:hover{
+        box-shadow: inset 0 -100px 0 0 rgba(0,0,0,.1);
+      }
+      &:active{
+        box-shadow: inset 0 -100px 0 0 rgba(0,0,0,.2);
+      }
+    }
+
+    p{
+      line-height: 1.6;
+    }
+
+    nav#chrome{
+        text-align:center;
+        overflow: auto;
+
+      ul.nav-content{
+        @include flex-canvas();
+        list-style: none;
+        img{
+          width: 500px;
+          margin: 30px auto 20px;
+        }
+        iframe{
+          float: right;
+        }
+      }
+      .nav-link{
+          color: black;
+          padding: 0 7px;
+          font-size: 18px;
+      }
+    }
+
+    .main{
+      display: block;
+      width: 1200px;
+      margin: auto;
+    }
   }
 }

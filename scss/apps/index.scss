@@ -1,0 +1,112 @@
+@import "../lib";
+
+rebound-home{
+  @include flex-canvas();
+  display: block;
+  margin-top: 10px;
+  border-radius: 2px;
+  overflow: auto;
+  text-align: left;
+  border: 15px solid white;
+  box-shadow: 0px 1px 1px #4D4D4D;
+  margin-bottom: 60px;
+  padding: 0;
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+
+  nav.subnav{
+    @include flex-grid(6);
+    border-right: 1px solid #ccc;
+    height: 100%;
+    background: rgba(0,0,0,.05);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+
+    &.fixed{
+      position: fixed;
+      width: 293px;
+    }
+
+    .subnav-item{
+      display: block;
+      text-align: left;
+      font-weight: 200;
+      text-decoration: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      color: black;
+      transition: background .1s, color .1s;
+      border: none;
+
+      &:hover{
+        background: rgba(0,0,0,.05);
+      }
+      &.selected{
+        background: $red;
+        color: white;
+      }
+    }
+    h2{
+      font-size: 12px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      font-weight: 400;
+      background: $brown;
+      color: white;
+      margin: 0;
+
+    }
+
+  }
+  main{
+    @include flex-grid(18, $padding: 3, $offset: 6);
+    box-shadow: -3px 0 0 0 rgba(0, 0, 0, 0.05);
+
+    h1{
+      display: block;
+      text-align: center;
+      margin-top: 60px;
+      border-bottom: 3px solid rgba(0,0,0,.1);
+      padding-bottom: 30px;
+    }
+
+    .download-button{
+      display: block;
+      margin: auto;
+      width: 210px;
+      text-align: center;
+    }
+    .download-runtime-button{
+      display: block;
+      margin: auto;
+      width: 175px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .donwload-or{
+      display: block;
+      text-align: center;
+      padding: 15px;
+      font-size: 18px;
+      color: $dark-gray;
+    }
+
+    .bower-install{
+      display: block;
+      margin: auto;
+      width: 210px;
+      text-align: center;
+      margin-top: 30px;
+      border-bottom: 1px solid $white;
+    }
+
+
+
+  }
+}

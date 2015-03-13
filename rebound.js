@@ -53,13 +53,6 @@
   }));
   app.set('view engine', 'handlebars');
 
-// Set Sass Rendering Options
-  app.use(sass.middleware({
-    src: __dirname + '/sass',
-    dest: __dirname + '/public',
-    debug: true,
-    force: true
-  }));
 
 // Set Static Content Locations
   app.set('views', path.join(__dirname, 'views'));
@@ -69,6 +62,8 @@
   app.get('/', home.index);
   app.get('/home', home.index);
   app.post('/git/push', git.push);
+  app.get('/*', home.index);
+
 
 
 // Start Server

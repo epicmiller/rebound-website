@@ -1,0 +1,128 @@
+<element name="rebound-home">
+  <template>
+
+    <nav class="subnav {{if menuFixed 'fixed'}}">
+      <h2>ReboundJS</h2>
+        <a href="#overview" class="subnav-item selected">Overview</a>
+        <a href="#start" class="subnav-item">Getting Started</a>
+
+      <h2>Data</h2>
+        <a href="#models" class="subnav-item">Models</a>
+        <a href="#collections" class="subnav-item">Collections</a>
+        <a href="#computedProperties" class="subnav-item">Computed Properties</a>
+
+      <h2>Templates</h2>
+        <a href="#templating" class="subnav-item">Handlebars</a>
+        <a href="#templating" class="subnav-item">HTMLBars & Data Binding</a>
+        <a href="#helpers" class="subnav-item">Built In Helpers</a>
+
+      <h2>Components</h2>
+        <a href="#routing" class="subnav-item">Custom Elements</a>
+
+
+      <h2>Routing</h2>
+      <a href="#routing" class="subnav-item">Routable Components</a>
+
+    </nav>
+
+    <main>
+
+      <code class="language-markup bower-install">bower install reboundjs</code>
+      <span class="donwload-or">or</span>
+      <a href="{{origin}}/vendor/reboundjs/rebound.runtime.js" class="button download-button" download>Download: v0.0.49</a>
+      <a href="{{origin}}/vendor/reboundjs/rebound.runtime.js" class="download-runtime-button" download>Download Runtime: v0.0.49</a>
+
+
+
+      <h2>What is Rebound?</h2>
+      <p>Rebound is a data-bound Model View Component framework built on <a href="http://www.backbonejs.org" target="_blank">Backbone</a> and <a href="https://github.com/tildeio/htmlbars" target="_blank">HTMLBars</a>.</p>
+      <p>Rebound replaces Backbone's view layer with HTMLBars templates, binding to your models to the dom on render and live updating your page as they change. </p>
+      <p>To make the conversation two-way, event helpers and automatic binding to form elements lets you respond to user interaction. </p>
+      <p>Combine this with an augmented but still powerfully simple router and the new W3 Web Components syntax, and you get an amazingly small but powerful framework to develop data-bound single page apps.</p>
+
+      <h2>Awesome! How do I use it?</h2>
+      <p>You can include Rebound on your page like this:</p>
+
+      <pre data-src="prism.js" class="language-markup">
+        <code class="language-markup">
+  &lt;script src="/javascripts/lib/rebound.runtime.js" id="Rebound"&gt;
+  {
+    "root": "/",
+    "globalComponents": {"chrome" : "nav"},
+    "jsPath": "/javascripts/apps/:route/:app.js",
+    "cssPath": "/stylesheets/apps/:app.css",
+    "triggerOnFirstLoad": true,
+    "routeMapping": {
+      "": "home"
+    }
+  }
+  &lt;/script&gt;
+        </code>
+      </pre>
+
+      <p>Because the Rebound script tag contains a src, nothing inside it gets executed, but is still accessable to the page as $('#Rebound').html().
+         We take advantage of this to load Rebound's router config options right where you include the Rebound library itself. Convenient!
+         Our <a href="/routing">routing section</a> covers exactly what these config options do.</p>
+
+      <p><b>If no config is passed to rebound inside of its script tag then Rebound's router will not start.
+            This leaves you with a standalone data bound component library to integrate with as you see fit.</b></p>
+
+
+
+      <h1>Rebound Data</h1>
+      <p>Rebound extends Backbone's powerful data model to allow for <b>deep nesting</b> of data objects and adds the concept of <b>Computed Properties</b>, which offers you a whole new level of power and flexibility.</p>
+      <p>These model's inherit all of Backbone's convenience functions and you can <a href="http://backbonejs.org/">refer to their documentation</a> for referance. Below we describe Rebound's improvements to the data model.</p>
+
+      <h2>Models</h2>
+
+      <h2>Collections</h2>
+
+      <h2>Computed Properties</h2>
+
+
+
+    </main>
+
+  </template>
+  <script>
+
+    return ({
+
+    /*********** Controller Default Configs **************/
+
+      routes: {
+        '': 'route'
+      },
+
+      attachedCallback: function(){
+
+        var that = this,
+            scrollCallback = function(){
+              that.set('menuFixed', (window.scrollY >= 230));
+              window.requestAnimationFrame(scrollCallback);
+            };
+
+        scrollCallback();
+        Prism.highlightAll();
+
+      },
+
+    /*********** Controller Default Properties **************/
+
+      menuFixed: false,
+      origin: function(){
+        return window.location.origin;
+      },
+
+    /************** Controller Functions *****************/
+
+      route: function(evet){
+
+      }
+
+    })
+  </script>
+</element>
+
+
+

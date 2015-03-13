@@ -1,0 +1,225 @@
+// config settings for flex grid
+$CONFIG_GRID_MAX_COLUMNS:     24;
+$CONFIG_LARGE_BREAKPOINT:		 1200px;
+$CONFIG_SMALL_BREAKPOINT:		 769px;
+$CONFIG_MIN_CANVAS_WIDTH:		 320px;
+$CONFIG_SPACING:              5px;
+$CONFIG_GRID_GUTTER:          10px;
+
+// This is the flexible grid framework
+// @author    Adam Miller
+// @category  flex-grid
+
+// Breakpoint mixin for setting grid breakpoints
+// @mixin     breakpoint
+// @param     $point {String} the name of desired breakpoint: papa-bear, mama-bear, baby-bear
+@mixin breakpoint($point) {
+  @if $point == papa-bear {
+    @media (min-width: $CONFIG_LARGE_BREAKPOINT) { @content; }
+  }
+  @else if $point == mama-bear {
+    @media (max-width: $CONFIG_LARGE_BREAKPOINT) and (min-width: $CONFIG_SMALL_BREAKPOINT) { @content; }
+  }
+  @else if $point == baby-bear {
+    @media (max-width: $CONFIG_SMALL_BREAKPOINT)  { @content; }
+  }
+}
+
+// Convenience method for creating a flex grid canvas
+// @mixin     flex-canvas
+@mixin flex-canvas() {
+  width: $CONFIG_LARGE_BREAKPOINT;
+  min-width: $CONFIG_MIN_CANVAS_WIDTH;
+  margin: auto;
+  padding: 0 10px;
+  // Box Sizing Border-Box Works IE8+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  @include breakpoint(papa-bear) {
+      width: $CONFIG_LARGE_BREAKPOINT;
+  }
+  @include breakpoint(mama-bear) {
+      width: 100%;
+  }
+  @include breakpoint(baby-bear) {
+      width: 100%;
+  }
+}
+
+// Utility function multiplies each element in a list by the given value
+// @function  map
+// @param     $list {List} The list to map the value onto
+// @param     $value {Number} The value to use as the operand
+// @returns   $result {List} The resulting list of multiplied values
+@function flex-map($list, $value) {
+  $result: ();
+  @each $item in $list {
+    $result: append($result, $item * $value);
+  }
+  @return $result;
+}
+
+// Utility function returns horizontal and vertical values from css <top> <right> <bottom> <left> format and all it's shorthand forms
+// @function  horizontal-values
+// @param     $list {List} The list of css <top> <right> <bottom> <left> values, or any shorthand variation
+// @returns   $result {List} List in the form of <left> <right>
+@function flex-horizontal-values($list){
+  @if(length($list) == 1){
+    @return ($list $list);
+  }
+  @if(length($list) == 2 or length($list) == 3){
+    @return (nth($list, 2), nth($list, 2));
+  }
+  @if(length($list) == 4){
+    @return (nth($list, 4), nth($list, 2));
+  }
+}
+
+// Counter to Help Calculate Width of Grid Elements in IE7
+// IE7 Does Not Support box-sizing: border-box - Falls Back to Percent Based Margins & Padding
+// Tracks Total Width of Margin + Padding + Offset While Running Mixin To Calculate Grid Width at End
+$FLEX_GRID_IE_COUNTER: 0;
+
+// Outputs the padding styling for flex-grid elements.
+// In IE8+ box-sizing: border-box; gives us static width padding with a fluid box.
+// In IE7 it degrades back to percent based padding. IE7 width is calculated accordingly.
+// @mixin     flex-grid-padding
+// @param     $padding {String} The padding ratios passed in css <top> <left> <bottom> <right> form. All shorthand options are availible.
+@mixin flex-grid-padding($padding){
+  // Map Spacing Unit Onto Ratios List
+  padding: flex-map($padding, $CONFIG_SPACING);
+  // IE7 Falls Back to Percent Based Horizontal Padding
+  $horizontal: flex-map(flex-horizontal-values($padding), 0.75%);
+  *padding-left: nth($horizontal, 1);
+  *padding-right: nth($horizontal, 2);
+  $FLEX_GRID_IE_COUNTER : $FLEX_GRID_IE_COUNTER + nth($horizontal, 1) + nth($horizontal, 2);
+}
+
+// Outputs the margin styling for flex-grid elements.
+// In IE8+ a transparent border works as the margin.
+// With box-sizing: border-box; this gives us static width "margins" with a fluid box.
+// In IE7 it degrades back to percent based margins. IE7 width is calculated accordingly.
+// @mixin     flex-grid-margin
+// @param     $margin {String} The margin ratios passed in css <top> <left> <bottom> <right> form. All shorthand options are availible.
+@mixin flex-grid-margin($margin){
+  // Grid Gutters are Transparent Border
+  border: 0 solid transparent;
+  border-width: flex-map($margin, $CONFIG_GRID_GUTTER/2);
+
+  // IE8 Hack for Transparent Borders
+  @media \0screen {
+    border-color: pink;
+    filter: progid:DXImageTransform.Microsoft.Chroma(color=pink);
+  }
+
+  // IE7 falls back to percent based horizontal margin
+  $horizontal: flex-map(flex-horizontal-values($margin), 0.75%);
+  *border: 0;
+  *margin: flex-map($margin, $CONFIG_GRID_GUTTER/2);
+  *margin-left: nth($horizontal, 1);
+  *margin-right: nth($horizontal, 2);
+  $FLEX_GRID_IE_COUNTER : $FLEX_GRID_IE_COUNTER + nth($horizontal, 1) + nth($horizontal, 2);
+}
+
+// The main flex-grid mixin
+// @mixin     flex-grid
+// @param     $columns {Number} the number of columns to span
+// @param     $container {String} the styleguide() container input - container styles are inherited from styleguide()
+// @param     $preserve {Bool} if true, grid element will retain width and offset in baby-bear, otherwise will go full width
+// @param     $margin {List} grid margin ratios in the form <top> <right> <bottom> <left> or any shorthand variation
+// @param     $padding {List} grid padding ratios in the form <top> <right> <bottom> <left> or any shorthand variation
+// @param     $offset {Number} the number of grid columns offset from the left
+// @param     $push {Number} number of columns pushed to the right. value is 0 in baby-bear. used for element reordering
+// @param     $pull {Number} number of columns pulled to the left. value is 0 in baby-bear. used for element reordering
+@mixin flex-grid($columns, $container: false, $preserve: false, $margin: none, $padding: none, $offset: 0, $push: false, $pull: false) {
+
+  $FLEX_GRID_IE_COUNTER : 0;
+  $COLUMN_WIDTH : 100%/$CONFIG_GRID_MAX_COLUMNS;
+
+  // Inherit Given Container Styling
+  @if($container){
+    @include styleguide($container);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    // Styled Containers Have Default Margin and Padding
+    // If Margin and Padding are Not Overridden, Set to Defaults.
+    $padding: if(($padding == none), 3, $padding);
+    $margin: if(($margin == none), 1, $margin);
+
+    // The Actual Container Cannot use Borders or Box Shadows Because of Transparent Border-Margin
+    // Therefore :before Element is Used to Style These
+    &:before{
+      @include styleguide($container);
+      content :"";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0px;
+      left: 0px;
+      z-index: -1;
+      background-image: none;
+      background-color: transparent;
+      background: inherit;
+    }
+  }
+
+  // Base Styles
+  display: inline;
+  float: left;
+  position: relative;
+
+  // Box Sizing Border-Box Works IE8+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  // Clip Background to Padding Box For Transparent Borders
+  // Transparent Border Functions as Margin
+  // Note IE8 Workaround in flex-grid-margin()
+  -moz-background-clip: padding;     /* Firefox 3.6 */
+  -webkit-background-clip: padding-box;  /* Safari 4? Chrome 6? */
+  background-clip: padding-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
+
+  // Set Grid Margins
+  @if($margin != none){
+    @include flex-grid-margin($margin);
+  }
+
+  // Set Grid Padding
+  @if($padding != none){
+    @include flex-grid-padding($padding);
+  }
+
+  // Set Grid Offset
+  @if($offset > 0){
+    margin-left: $COLUMN_WIDTH*$offset;
+    $FLEX_GRID_IE_COUNTER : $FLEX_GRID_IE_COUNTER + $COLUMN_WIDTH*$offset;
+  }
+
+  // Set Push and Pull
+  @if($push){
+    left: $COLUMN_WIDTH*$push;
+  }@else if($pull){
+    right: $COLUMN_WIDTH*$pull;
+  }
+
+  // Set Grid Column Width
+  width: $COLUMN_WIDTH*$columns;
+  *width: $COLUMN_WIDTH*$columns - $FLEX_GRID_IE_COUNTER;
+
+  // Baby-bear Grid Element Sizing and Positioning
+  @include breakpoint(baby-bear){
+    // Reset Push and Pull
+    left: 0;
+    right: 0;
+    // If Sizing Not Preserved, Go Full Width and Remove Offset
+    @if($preserve == false){
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+}
