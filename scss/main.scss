@@ -11,7 +11,7 @@ html {
   padding: 0;
 
   body{
-    background-color: #f9f6f6;
+    background-color: $off-white;
     border-top: 3px solid #BC2222;
     position: absolute;
     top:0;
@@ -21,7 +21,11 @@ html {
     padding: 0;
 
     font-family: "Open Sans", sans-serif;
-
+    .loading{
+      display: block;
+      text-align: center;
+      padding-top: 60px;
+    }
     a{
       color: $red;
       text-decoration: none;
@@ -75,6 +79,9 @@ html {
           color: black;
           padding: 0 7px;
           font-size: 18px;
+      }
+      .icon-link{
+        border: none !important;
       }
     }
 

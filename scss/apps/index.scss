@@ -30,6 +30,7 @@ rebound-home{
     &.fixed{
       position: fixed;
       width: 293px;
+      padding-bottom: 70px;
     }
 
     .subnav-item{
@@ -66,6 +67,9 @@ rebound-home{
   main{
     @include flex-grid(18, $padding: 3, $offset: 6);
     box-shadow: -3px 0 0 0 rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+    background: $off-white;
 
     h1{
       display: block;
