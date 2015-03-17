@@ -31,6 +31,6 @@
     "requirejs": "~2.1.14",
     "almond": "0.2.9",
     "fontawesome": "4.3.0",
-    "reboundjs": "0.0.58"
+    "reboundjs": "0.0.60"
   }
 }

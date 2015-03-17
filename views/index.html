@@ -7,6 +7,7 @@
         <a href="/start" class="subnav-item">Getting Started</a>
 
       <h2>Data</h2>
+        <a href="/events" class="subnav-item">Events</a>
         <a href="/models" class="subnav-item">Models</a>
         <a href="/collections" class="subnav-item">Collections</a>
         <a href="/computedProperties" class="subnav-item">Computed Properties</a>
@@ -29,26 +30,18 @@
 
       <code class="language-markup bower-install">bower install reboundjs</code>
       <span class="donwload-or">or</span>
-      <a href="{{origin}}/vendor/reboundjs/rebound.runtime.js" class="button download-button" download>Download: v0.0.49</a>
-      <span class="download-runtime-button">
-        <a href="{{origin}}/vendor/reboundjs/rebound.runtime.js" download>Download Runtime: v0.0.49</a>
-        <a href="{{origin}}/vendor/reboundjs/rebound.runtime.min.js" download>(min)</a>
-      </span>
-
-
-
+      <a href="{{versions.0.zipball_url}}" class="button download-button"  download>Download: v{{versions.0.name}}</a>
 
       <h2>What is Rebound?</h2>
       <p>Rebound is a data-bound Model View Component framework built on <a href="http://www.backbonejs.org" target="_blank">Backbone</a> and <a href="https://github.com/tildeio/htmlbars" target="_blank">HTMLBars</a>.</p>
-      <p>Rebound replaces Backbone's view layer with HTMLBars templates, binding to your models to the dom on render and live updating your page as they change. </p>
-      <p>To make the conversation two-way, event helpers and automatic binding to form elements lets you respond to user interaction. </p>
-      <p>Combine this with an augmented but still powerfully simple router and the new W3 Web Components syntax, and you get an amazingly small but powerful framework to develop data-bound single page apps.</p>
+      <p>Rebound replaces Backbone's view layer with HTMLBars templates, binding your models to the dom on render and live updating your page as they change. </p>
+      <p>To make the conversation two-way, event helpers and automatic bindings to form elements let you respond to user interaction. </p>
+      <p>Combine this with an augmented, but still powerfully simple router and the new Web Components specification, and you get an amazingly small but powerful framework to develop data-bound single page apps.</p>
 
       <h2>Awesome! How do I use it?</h2>
       <p>You can include Rebound on your page like this:</p>
 
-      <pre data-src="prism.js" class="language-markup">
-        <code class="language-markup">
+<pre data-src="prism.js" class="line-numbers"><code class="language-markup">
   &lt;script src="/javascripts/lib/rebound.runtime.js" id="Rebound"&gt;
   {
     "root": "/",
@@ -60,29 +53,233 @@
       "": "home"
     }
   }
-  &lt;/script&gt;
-        </code>
-      </pre>
+  &lt;/script&gt;</code></pre>
 
       <p>Because the Rebound script tag contains a src, nothing inside it gets executed, but is still accessable to the page as $('#Rebound').html().
          We take advantage of this to load Rebound's router config options right where you include the Rebound library itself. Convenient!
          Our <a href="/routing">routing section</a> covers exactly what these config options do.</p>
 
-      <p><b>If no config is passed to rebound inside of its script tag then Rebound's router will not start.
+      <p><b>If no config is passed to Rebound inside of its script tag then Rebound's router will not start.
             This leaves you with a standalone data bound component library to integrate with as you see fit.</b></p>
+
+      <p>Like Backbone, Rebound's only hard dependancy is a utility library, like <a href="www.underscorejs.org">Underscore</a> or <a href="https://lodash.com/">Lodash</a>. Rebound has no dependancy on JQuery, and shims JQuery's ajax method for RESTful persistance.</p>
 
 
 
       <h1>Rebound Data</h1>
-      <p>Rebound extends Backbone's powerful data objects to allow for <b>deep nesting</b> of data objects and adds the concept of <b>Computed Properties</b>, which offers you a whole new level of power and flexibility.</p>
-      <p>These model's inherit all of Backbone's convenience functions and you can <a href="http://backbonejs.org/" target="_blank">refer to their documentation</a> for referance. Below we describe Rebound's improvements to the data model.</p>
+      <p>Rebound extends Backbone's powerful data objects to allow for <b>deep nesting</b> and adds <b>Computed Properties</b> into the mix, offering you a whole new level of power and flexibility.</p>
+      <p>These model's inherit all of Backbone's convenience functions and you can <a href="http://backbonejs.org/" target="_blank">refer to Backbone's documentation</a> for referance. Below we describe features unique to Rebound.</p>
+      <p>In most scenarios you will use Rebound Data objects in the context of <a href="/components">Components</a> and will now have to create them directly</p>
+
+
+      <h2>Events</h2>
+      <p>Eventable objects in Rebound present the same methods available in <a href="http://backbonejs.org/#Events">Backbone</a>,
+         but unlike Backbone, Rebound allows for deeply nested data structures and as a result,
+         Rebound bubbles all <a href="http://backbonejs.org/#Events-catalog">Backbone events</a> up the data tree.
+         Because of this, your root object can act as an event hub for the entire data object below it.</p>
+      <p>The attribute value of named <code>change:[attribute]</code> events are modified to be the relative path to that attribute from the object it was fired on.
+         For example, if <code>foo.bar[2].val</code> is changed, the events:</p>
+      <p><code>change:val</code> <code>change:[2]val</code> <code>change:bar[2]val</code> and <code>change:foo.bar[2].val</code></p>
+      <p>are fired at each successive level in the data tree.</p>
+
+
 
       <h2>Models</h2>
       <p><b>Rebound Models</b> are the most basic data object in the framework — frequently representing a row in a table in a database on your server.
-         The inherit from Backbone Models and have all of the same useful methods you are used to for performing computations and transformations on that data.
+         The inherit from <a href="http://backbonejs.org/#Model">Backbone Models</a> and have all of the same useful methods you are used to for performing computations and transformations on that data.
          Rebound augments Backbone Models by enabling <b>deep data nesting</b>. You can now have both <b>Rebound Collections</b> and <b>Rebound Computed Properties</b> as properties of a Model.</p>
 
+      <h3>constructor / initialize <code>new Rebound.Model([attributes], [options])</code></h3>
+      <p>When creating an instance of a model, you can pass in the initial values of the attributes, which will be set on the model.
+         Rebound.Model's constructor now accepts any valid JSON structure, where arrays only contain hashes.</p>
+      <p>These values are promoted to their respective Rebound datastructures. Arrays become Collections, Hashes become Models and Functions are promoted to Computed Properties.</p>
+      <p>If you define an initialize function, it will be invoked when the model is created.</p>
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+var model = new Rebound.Model({
+  arr: [{val: 0}, {val: 1}, {val: 2}],
+  obj: {
+    prop: 'foo',
+    arr: []
+  },
+  str: 'string',
+  int: 1,
+  bool: true.
+  // See ComputedProperties section for details
+  func: function(){
+    return this.get('str');
+  }
+});</code></pre>
+
+      <h3>get <code>model.get(path)</code></h3>
+      <p>Backbone's <b>Model.get</b> method has been extended to allow for deep retreival of data using JSON or Handlebars syntax. Gets are also able to be strung together for the same effect.</p>
+      <p>Using the model we have created above:</p>
+
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+model.get('bool');           // Returns true
+model.get('func');           // Returns 'string'
+model.get('arr');            // Returns the Rebound Collection
+model.get('arr[1].val');     // Returns 1
+model.get('arr.1.val');      // Returns 1
+model.get('obj');            // Returns the Rebound Model
+model.get('obj.prop');       // Returns 'foo'
+model.get('obj').get('prop') // Returns 'foo'</code></pre>
+
+      <h3>set <code>model.set(attributes, [options])</code></h3>
+      <p>Similarly, <b>Model.set</b> has been extended to allow for deep setting
+         of data using JSON or Handlebars syntax. Like Model constructors, you
+         can pass set a JSON object and Rebound will do a deep merge of the data.</p>
+      <p>If any of the attributes change the model's state, a <code>change</code>
+         event will be triggered on the model. Change events for specific attributes
+         are also triggered, and you can bind to those as well, for example:
+         <code>change:bool</code>, and <code>change:str</code>.</p>
+      <p>Named change events are propagated up the data tree and can be bound to using the relative path.
+          For example: if <code>arr[0].val</code> is modified, a <code>change:val</code>
+          event is triggered on <code>arr[0]</code>, a <code>change:[0].val</code>
+          event is triggered on <code>arr</code>, and a <code>change:arr[0].val</code>
+          event is triggered on the root model.</p>
+      <p>If <code>{silent: true}</code> is passed as an option, no events will be fired.</p>
+      <p>Using the model we have created above:</p>
+
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+model.set('bool', false);    // Sets `bool` to false
+model.set('arr[1].val', 3);  // Sets the second element in arr's value to 3
+model.set('arr.1.val', 4);   // Sets the second element in arr's value back to 1
+model.set('obj, {            // Adds an object to obj's array and adds property `bool`
+  arr: [{val: 0}],
+  bool: true
+});
+model.get('obj').set('prop', 'bar') // Sets `obj.prop` to 'bar'</code></pre>
+
+      <p><b>Model.set</b> can also accept a hash of properties to update:</p>
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+model.set({
+  'bool': true,
+  'arr[1].val': 1
+  'obj.bool': false
+);</code></pre>
+
+      <h3>toggle <code>model.get(path, [options])</code></h3>
+      <p>A new convenience method, <b>Model.toggle</b>, will toggle the value of boolean properties. A <code>change</code> event will be fired.</p>
+      <p>Using the model we have created above:</p>
+
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+model.toggle('bool');    // Sets `bool` to false
+model.toggle('bool');    // Sets `bool` to true</code></pre>
+
+
+      <h3>toJSON <code>model.toJSON()</code></h3>
+      <p><b>Model.toJSON</b> has been extended to return a deep, cyclic dependancy safe, copy of the model. <a href="/computedProperties">Computed Properties</a> are evaluated.</p>
+      <p>Using the model we have created above:</p>
+
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+model.toJSON();
+
+//  Returns:
+{
+  arr: [{val: 0}, {val: 1}, {val: 2}],
+  obj: {
+    prop: 'bar',
+    bool: false,
+    arr: [{val: 0}]
+  },
+  str: 'string'
+  int: 1,
+  bool: true,
+  func: 'string'
+}</code></pre>
+
+
+      <h3>reset <code>model.reset([attributes], [options])</code></h3>
+      <p>Models now have a, <b>Model.reset</b> property. Calling reset on a model
+         will set its primitive properties back to their defaults, call reset on
+         all complex objects it contains, unset any values without defaults, and
+         set its properties to the new values in the JSON blob passed to reset.</p>
+      <p>A single "reset" event is triggered at the end. Returns the model.
+         For convenience, within a model "reset" event, the list of previous attributes is available as options.previousAttributes.</p>
+      <p>Computed properties are not removed and will reflect the changes to the properties they depend on.</p>
+      <p>Using the model we have created above:</p>
+
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+model.reset({
+  arr: [{val: 0}],
+  bool: false
+});
+
+//  Because our model had no defaults, model now contians:
+//  {
+//    arr: [{val: 0}],
+//    obj: {},
+//    bool: false,
+//    func: function(){
+//      return this.get('str'); // Evaluates to undefined
+//    }
+//  }</code></pre>
+
       <h2>Collections</h2>
+
+      <p>Collections are ordered sets of models and have largely stayed the same in Rebound.
+         You can bind <code>change</code> events to be notified when any model in the collection has been modified,
+         listen for <code>add</code> and <code>remove</code> events, fetch the
+         collection from the server, and use a full suite of
+         <a href="http://backbonejs.org/#Collection-Underscore-Methods">Underscore.js methods</a>.
+      </p>
+
+      <h3>constructor / initialize <code>new Rebound.Collection([attributes], [options])</code></h3>
+      <p>When creating a Collection, you may choose to pass in the initial array of models.
+         These Models can now be any valid JSON structure where arrays only contain hashes.</p>
+      <p>These values are promoted to their respective Rebound data structures. Arrays become <b>Collections</b>, Hashes become <b>Models</b> and Functions are promoted to <b>Computed Properties</b>.</p>
+      <p>If you define an initialize function, it will be invoked when the collection is created.
+         There are a couple of options that, if provided, are attached to the collection directly: <code>model</code> and <code>comparator</code>.
+         Passing false as the comparator option will prevent sorting.
+         Passing the model option is a handy way to give every model in the collection a default set of values or computed properties.</p>
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+var templateModel = Rebound.Model.extend({
+  defaults: {
+    func: function(){
+      return this.get('val') + 1;
+    }
+  }
+});
+
+// Every model in this collection will have a computed property called 'func'
+var collection = new Rebound.Collection([
+  {val: 0, obj: {foo: 'bar'}},
+  {val: 1, obj: {foo: 'baz'}}
+],{ model: templateModel });</code></pre>
+
+      <h3>get <code>collection.get(path)</code></h3>
+      <p>Similar to Models, Backbone's <b>Collection.get</b> method has been extended to allow for deep retreival of data using JSON or Handlebars syntax. Gets are also able to be strung together for the same effect.</p>
+
+
+      <h3>set <code>collection.set(attributes, [options])</code></h3>
+      <p>Similarly, <b>Collection.set</b> has been extended to allow for deep setting
+         of data using JSON or Handlebars syntax too. Like Collection constructors, you
+         can pass set a JSON object and Rebound will do a deep merge of the data.</p>
+      <p>If a model in the list isn't yet in the collection it will be added;
+         if the model is already in the collection its attributes will be merged;
+         and if the collection contains any models that aren't present in the list, they'll be removed.
+         All of the appropriate <code>add</code>, <code>remove</code>, and <code>change</code> events are fired as this happens.
+         Returns the touched models in the collection.
+         If you'd like to customize the behavior, you can disable it with options:
+         <code>{silent: true}</code>, <code>{add: false}</code>, <code>{remove: false}</code>, or <code>{merge: false}</code>.</p>
+
+       <h3>reset <code>collection.reset([attributes], [options])</code></h3>
+       <p>Adding and removing models one at a time is all well and good,
+          but sometimes you have so many models to change that you'd rather
+          just update the collection in bulk. Use reset to replace a collection
+          with a new list of models (or attribute hashes), triggering a single
+          <code>reset</code> event at the end. In Rebound, these models or hashes
+          can be deeply nested objects, just like those that can be passed to
+          Collection constructors. Returns the newly-set models.
+          For convenience, within a <code>reset</code> event, the list of any
+          previous models is available as <code>options.previousModels</code>.
+          Calling <code>collection.reset()</code> without passing any models as
+          arguments will empty the entire collection.</p>
+
+
+      <h3>toJSON <code>collection.toJSON()</code></h3>
+      <p>Returns a deep, cyclic dependancy safe, copy of the models in the collection.</p>
+
 
       <h2>Computed Properties</h2>
 
@@ -93,13 +290,24 @@
   </template>
   <script>
 
+    var versions = Rebound.Collection.extend({
+      url: 'https://api.github.com/repos/epicmiller/reboundjs-dist/tags'
+    });
+
     return ({
 
     /*********** Controller Default Configs **************/
 
+
       routes: {
         '': 'route',
         ':route': 'route'
+      },
+
+      createdCallback: function(){
+        this.on('all', function(){console.log(arguments);})
+        this.get('versions').fetch({reset: true});
+        window.index = this;
       },
 
       attachedCallback: function(){
@@ -121,6 +329,8 @@
       origin: function(){
         return window.location.origin;
       },
+      versions: new versions([{name: '--.--.--'}]),
+
 
     /************** Controller Functions *****************/
 

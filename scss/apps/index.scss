@@ -20,6 +20,7 @@ rebound-home{
   nav.subnav{
     @include flex-grid(6);
     border-right: 1px solid #ccc;
+    display: block;
     height: 100%;
     background: rgba(0,0,0,.05);
     position: absolute;
@@ -47,7 +48,7 @@ rebound-home{
       &:hover{
         background: rgba(0,0,0,.05);
       }
-      &.selected{
+      &.active{
         background: $red;
         color: white;
       }
@@ -78,6 +79,49 @@ rebound-home{
       border-bottom: 3px solid rgba(0,0,0,.1);
       padding-bottom: 30px;
     }
+    h2{
+      background: $off-white;
+      float: left;
+      margin: 30px 100% 25px 0;
+      padding-right: 15px;
+      white-space: pre;
+      &:after{
+        content: '';
+        background: #ccc;
+        height: 1px;
+        width: 100%;
+        position: absolute;
+        z-index: -1;
+        margin-top: 19px;
+      }
+
+    }
+    h3{
+      &:before {
+        content: '';
+        display: inline;
+        float: left;
+        width: 5px;
+        height: 2px;
+        background: black;
+        border-radius: 7px;
+        margin: 13px 5px 0 0;
+      }
+      code{
+        font-weight: normal;
+        margin-left: 15px;
+      }
+    }
+    p{
+      margin-left: 11px;
+      code{
+        padding: 2px 3px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        white-space: pre;
+      }
+    }
 
     .download-button{
       display: block;
@@ -95,7 +139,7 @@ rebound-home{
     .donwload-or{
       display: block;
       text-align: center;
-      padding: 15px;
+      padding: 15px 0 18px 0;
       font-size: 18px;
       color: $dark-gray;
     }

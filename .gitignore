@@ -21,3 +21,4 @@ public/templates
 public/javascripts/vendor
 public/javascripts/lib/collegia.framework.js
 public/tmp
+public/vendor
