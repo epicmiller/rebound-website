@@ -1,0 +1,17 @@
+<element name="rebound-data-events">
+  <template>
+
+    <h2 id="data-events">Events</h2>
+    <p>Eventable objects in Rebound present the same methods available in <a href="http://backbonejs.org/#Events">Backbone</a>,
+       but unlike Backbone, Rebound allows for deeply nested data structures and as a result,
+       Rebound bubbles all <a href="http://backbonejs.org/#Events-catalog">Backbone events</a> up the data tree.
+       Because of this, your root object can act as an event hub for the entire data object below it.
+       All but one of these events reamins unchanges as it travels up the data tree.</p>
+    <p>The attribute value of named <code>change:[attribute]</code> events is modified to be the relative path to that attribute from the object it was fired on.
+       For example, if <code>foo.bar[2].val</code> is changed, the events:</p>
+    <p><code>change:val</code> <code>change:[2]val</code> <code>change:bar[2]val</code> and <code>change:foo.bar[2].val</code></p>
+    <p>are fired at each successive level in the data tree.</p>
+
+  </template>
+  <script>return {}</script>
+</element>

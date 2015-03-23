@@ -1,0 +1,73 @@
+<element name="rebound-data-collections">
+  <template>
+
+
+      <h2 id="data-collection">Collections</h2>
+
+      <p>Collections are ordered sets of models and have largely stayed the same in Rebound.
+         You can bind <code>change</code> events to be notified when any model in the collection has been modified,
+         listen for <code>add</code> and <code>remove</code> events, fetch the
+         collection from the server, and use a full suite of
+         <a href="http://backbonejs.org/#Collection-Underscore-Methods">Underscore.js methods</a>.
+      </p>
+
+      <h3 id="data-collection-constructor">constructor / initialize <code>new Rebound.Collection([attributes], [options])</code></h3>
+      <p>When creating a Collection, you may choose to pass in the initial array of models.
+         These Models can now be any valid JSON structure where arrays only contain hashes.</p>
+      <p>These values are promoted to their respective Rebound data structures. Arrays become <b>Collections</b>, Hashes become <b>Models</b> and Functions are promoted to <b>Computed Properties</b>.</p>
+      <p>If you define an initialize function, it will be invoked when the collection is created.
+         There are a couple of options that, if provided, are attached to the collection directly: <code>model</code> and <code>comparator</code>.
+         Passing false as the comparator option will prevent sorting.
+         Passing the model option is a handy way to give every model in the collection a default set of values or computed properties.</p>
+<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
+var templateModel = Rebound.Model.extend({
+  defaults: {
+    func: function(){
+      return this.get('val') + 1;
+    }
+  }
+});
+
+// Every model in this collection will have a computed property called 'func'
+var collection = new Rebound.Collection([
+  {val: 0, obj: {foo: 'bar'}},
+  {val: 1, obj: {foo: 'baz'}}
+],{ model: templateModel });</code></pre>
+
+      <h3 id="data-collection-get">get <code>collection.get(path)</code></h3>
+      <p>Similar to Models, Backbone's <b>Collection.get</b> method has been extended to allow for deep retreival of data using JSON or Handlebars syntax. Gets are also able to be strung together for the same effect.</p>
+
+
+      <h3 id="data-collection-set">set <code>collection.set(attributes, [options])</code></h3>
+      <p>Similarly, <b>Collection.set</b> has been extended to allow for deep setting
+         of data using JSON or Handlebars syntax too. Like Collection constructors, you
+         can pass set a JSON object and Rebound will do a deep merge of the data.</p>
+      <p>If a model in the list isn't yet in the collection it will be added;
+         if the model is already in the collection its attributes will be merged;
+         and if the collection contains any models that aren't present in the list, they'll be removed.
+         All of the appropriate <code>add</code>, <code>remove</code>, and <code>change</code> events are fired as this happens.
+         Returns the touched models in the collection.
+         If you'd like to customize the behavior, you can disable it with options:
+         <code>{silent: true}</code>, <code>{add: false}</code>, <code>{remove: false}</code>, or <code>{merge: false}</code>.</p>
+
+       <h3 id="data-collection-reset">reset <code>collection.reset([attributes], [options])</code></h3>
+       <p>Adding and removing models one at a time is all well and good,
+          but sometimes you have so many models to change that you'd rather
+          just update the collection in bulk. Use reset to replace a collection
+          with a new list of models (or attribute hashes), triggering a single
+          <code>reset</code> event at the end. In Rebound, these models or hashes
+          can be deeply nested objects, just like those that can be passed to
+          Collection constructors. Returns the newly-set models.
+          For convenience, within a <code>reset</code> event, the list of any
+          previous models is available as <code>options.previousModels</code>.
+          Calling <code>collection.reset()</code> without passing any models as
+          arguments will empty the entire collection.</p>
+
+
+      <h3 id="data-collection-tojson">toJSON <code>collection.toJSON()</code></h3>
+      <p>Returns a deep, cyclic dependancy safe, copy of the models in the collection.</p>
+
+
+  </template>
+  <script>return {}</script>
+</element>

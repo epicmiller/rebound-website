@@ -18,16 +18,17 @@
 <link rel="shortcut icon" href="/images/favicon.ico">
 <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
-<script src="/vendor/underscore/underscore.js" type="text/javascript"></script>
+<script src="/vendor/underscore/underscore.js"></script>
+<script src="/vendor/smooth-scroll/dist/js/smooth-scroll.js"></script>
 <script src="/vendor/reboundjs/rebound.runtime.js" id="Rebound">
 {
   "root": "/",
   "globalComponents": {},
-  "jsPath": "/templates/:app.js",
+  "jsPath": "/templates/:app/:app.js",
   "cssPath": "/stylesheets/apps/:app.css",
   "triggerOnFirstLoad": true,
   "routeMapping": {
-    ":route": "index"
+    ":route(/*actions)": "index"
   }
 }
 </script>

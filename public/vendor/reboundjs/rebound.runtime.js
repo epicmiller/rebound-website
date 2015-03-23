@@ -8415,6 +8415,7 @@ define("rebound-router/rebound-router", ["exports", "module", "rebound-component
       // Start the history
       Backbone.history.start({
         pushState: true,
+	hashChange: false,
         root: this.config.root
       });
     }
