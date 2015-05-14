@@ -27,8 +27,8 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
     this._toCall.added = {};
   }
 
-  var ComputedProperty = function (prop, options) {
-    if (!_.isFunction(prop)) return console.error("ComputedProperty constructor must be passed a function!", prop, "Found instead.");
+  var ComputedProperty = function (getter, setter, options) {
+    if (!_.isFunction(getter) && !_.isFunction(setter)) return console.error("ComputedProperty constructor must be passed a functions!", prop, "Found instead.");
     options = options || {};
     this.cid = _.uniqueId("computedPropety");
     this.name = options.name;
@@ -38,9 +38,12 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
     this.waiting = {};
     this.isChanging = false;
     this.isDirty = true;
-    this.func = prop;
     _.bindAll(this, "onModify", "markDirty");
-    this.deps = propertyCompiler.compile(prop, this.name);
+
+    if (getter) this.getter = getter;
+    if (setter) this.setter = setter;
+    this.deps = propertyCompiler.compile(this.getter, this.name);
+
 
     // Create lineage to pass to our cache objects
     var lineage = {
@@ -70,6 +73,12 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
       return "";
     },
 
+    getter: function () {
+      return undefined;
+    },
+    setter: function () {
+      return undefined;
+    },
 
     markDirty: function () {
       if (this.isDirty) return;
@@ -204,6 +213,19 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
       context.off("all", this.onRecompute).on("all", this.onRecompute);
     },
 
+    unwire: function () {
+      var root = this.__root__;
+      var context = this.__parent__;
+
+      _.each(this.deps, function (path) {
+        var dep = root.get(path, { raw: true });
+        if (!dep || !dep.isComputedProperty) return;
+        dep.off("dirty", this.markDirty);
+      }, this);
+
+      context.off("all", this.onRecompute);
+    },
+
     // Call this computed property like you would with Function.call()
     call: function () {
       var args = Array.prototype.slice.call(arguments),
@@ -220,13 +242,13 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
     // the new computed value. Track changes to the cache to push it back up to
     // the original object and return the value.
     apply: function (context, params) {
-      if (!this.isDirty || this.isChanging) return;
+      context || (context = this.__parent__);
+
+      if (!this.isDirty || this.isChanging || !context) return;
       this.isChanging = true;
 
       var value = this.cache[this.returnType],
           result;
-
-      context || (context = this.__parent__);
 
       // Check all of our dependancies to see if they are evaluating.
       // If we have a dependancy that is dirty and this isnt its first run,
@@ -246,9 +268,9 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
 
       if (!this.isChanging) return;
 
-      this.stopListening(value, "all", this.onModify);
+      if (this.returnType !== "value") this.stopListening(value, "all", this.onModify);
 
-      result = this.func.apply(context, params);
+      result = this.getter.apply(context, params);
 
       // Promote vanilla objects to Rebound Data keeping the same original objects
       if (_.isArray(result)) result = new Rebound.Collection(result, { clone: false });else if (_.isObject(result) && !result.isData) result = new Rebound.Model(result, { clone: false });
@@ -311,6 +333,8 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
       options || (options = {});
       var attrs = key;
       var value = this.value();
+
+      // Noralize the data passed in
       if (this.returnType === "model") {
         if (typeof key === "object") {
           attrs = key.isModel ? key.attributes : key;
@@ -323,6 +347,7 @@ define("rebound-data/computed-property", ["exports", "module", "property-compile
       attrs = attrs && attrs.isComputedProperty ? attrs.value() : attrs;
 
       // If a new value, set it and trigger events
+      this.setter && this.setter.call(this.__root__, attrs);
       if (this.returnType === "value" && this.cache.value !== attrs) {
         this.cache.value = attrs;
         if (!options.quiet) {

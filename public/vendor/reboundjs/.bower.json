@@ -1,6 +1,6 @@
 {
   "name": "reboundjs",
-  "version": "0.0.60",
+  "version": "0.0.77",
   "homepage": "https://github.com/epicmiller/rebound",
   "authors": [
     "Adam Miller <adam@pages.me>"
@@ -28,13 +28,13 @@
     "test",
     "tests"
   ],
-  "_release": "0.0.60",
+  "_release": "0.0.77",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.60",
-    "commit": "51b07e7ebdee49dc5977ac37ef83658e93f048d4"
+    "tag": "0.0.77",
+    "commit": "573a960fb37ca526bbe16958b99fb036530b0752"
   },
   "_source": "git://github.com/epicmiller/reboundjs-dist.git",
-  "_target": "0.0.60",
+  "_target": "0.0.77",
   "_originalSource": "reboundjs"
 }

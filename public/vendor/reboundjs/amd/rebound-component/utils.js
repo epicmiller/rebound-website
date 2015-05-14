@@ -10,7 +10,7 @@ define("rebound-component/utils", ["exports", "module"], function (exports, modu
 
   var utils = function (query) {
     var i,
-        selector = _.isElement(query) && [query] || query === document && [document] || _.isString(query) && querySelectorAll(query) || [];
+        selector = _.isElement(query) && [query] || query === document && [document] || _.isString(query) && document.querySelectorAll(query) || [];
     this.length = selector.length;
 
     // Add selector to object for method chaining
@@ -115,19 +115,39 @@ define("rebound-component/utils", ["exports", "module"], function (exports, modu
     },
 
     // Applies function `func` depth first to every node in the subtree starting from `root`
+    // If the callback returns `false`, short circuit that tree.
     walkTheDOM: function (func) {
       var el,
           root,
-          len = this.length;
+          len = this.length,
+          result;
       while (len--) {
         root = this[len];
-        func(root);
+        result = func(root);
+        if (result === false) return;
         root = root.firstChild;
         while (root) {
           $(root).walkTheDOM(func);
           root = root.nextSibling;
         }
       }
+    },
+
+    // Searches each key in an object and tests if the property has a lookupGetter or
+    // lookupSetter. If either are preset convert the property into a computed property.
+    extractComputedProps: function (obj) {
+      for (var key in obj) {
+        var get = undefined,
+            set = undefined;
+        if (!obj.hasOwnProperty(key)) continue;
+        var desc = Object.getOwnPropertyDescriptor(obj, key);
+        get = desc.hasOwnProperty("get") && desc.get;
+        set = desc.hasOwnProperty("set") && desc.set;
+        if (get || set) {
+          delete obj[key];
+          obj[key] = { get: get, set: set, isComputedProto: true };
+        }
+      };
     },
 
     // Events registry. An object containing all events bound through this util shared among all instances.
@@ -297,6 +317,21 @@ define("rebound-component/utils", ["exports", "module"], function (exports, modu
       var result = {};
       recurse(data, "");
       return result;
+    },
+
+    unMarkLinks: function () {
+      var links = this[0].querySelectorAll("a[href=\"/" + Backbone.history.fragment + "\"]");
+      for (var i = 0; i < links.length; i++) {
+        links.item(i).classList.remove("active");
+        links.item(i).active = false;
+      }
+    },
+    markLinks: function () {
+      var links = this[0].querySelectorAll("a[href=\"/" + Backbone.history.fragment + "\"]");
+      for (var i = 0; i < links.length; i++) {
+        links.item(i).classList.add("active");
+        links.item(i).active = true;
+      }
     },
 
     // http://krasimirtsonev.com/blog/article/Cross-browser-handling-of-Ajax-requests-in-absurdjs

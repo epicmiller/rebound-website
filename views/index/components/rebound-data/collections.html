@@ -22,7 +22,7 @@
 <pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
 var templateModel = Rebound.Model.extend({
   defaults: {
-    func: function(){
+    get func(){
       return this.get('val') + 1;
     }
   }

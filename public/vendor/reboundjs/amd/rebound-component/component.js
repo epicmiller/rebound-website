@@ -15,9 +15,6 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
   var Model = _reboundDataReboundData.Model;
 
 
-  // If Backbone hasn't been started yet, throw error
-  if (!window.Backbone) throw "Backbone must be on the page for Rebound to load.";
-
   // Returns true if `str` starts with `test`
   function startsWith(str, test) {
     if (str === test) return true;
@@ -31,52 +28,130 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
     return true;
   }
 
-  function renderCallback() {
-    var i = 0,
-        len = this._toRender.length;
-    delete this._renderTimeout;
-    for (i = 0; i < len; i++) {
-      this._toRender.shift().notify();
-    }
-    this._toRender.added = {};
-  }
-
-  var env = {
-    helpers: helpers.helpers,
-    hooks: hooks
-  };
-
-  env.hydrate = function hydrate(spec, options) {
+  function hydrate(spec, options) {
     // Return a wrapper function that will merge user provided helpers and hooks with our defaults
     return function (data, options) {
-      // Ensure we have a well-formed object as var options
-      var env = options || {},
-          contextElement = data.el || document.body;
-      env.helpers = env.helpers || {};
-      env.hooks = env.hooks || {};
-      env.dom = env.dom || new DOMHelper();
+      // Rebound's default environment
+      // The application environment is propagated down each render call and
+      // augmented with helpers as it goes
+      var env = {
+        helpers: helpers.helpers,
+        hooks: hooks,
+        dom: new DOMHelper(),
+        useFragmentCache: true
+      };
+
+      // Ensure we have a contextual element to pass to render
+      var contextElement = data.el || document.body;
 
       // Merge our default helpers and hooks with user provided helpers
-      env.helpers = _.defaults(env.helpers, helpers.helpers);
-      env.hooks = _.defaults(env.hooks, hooks);
+      env.helpers = _.defaults(options.helpers || {}, env.helpers);
+      env.hooks = _.defaults(options.hooks || {}, env.hooks);
 
       // Call our func with merged helpers and hooks
       return spec.render(data, env, contextElement);
     };
   };
 
+
   // New Backbone Component
   var Component = Model.extend({
 
     isComponent: true,
 
+    _render: function () {
+      var i = 0,
+          len = this._toRender.length;
+      delete this._renderTimeout;
+      for (i = 0; i < len; i++) {
+        this._toRender.shift().notify();
+      }
+      this._toRender.added = {};
+    },
+
+    _callOnComponent: function (name, event) {
+      if (!_.isFunction(this[name])) {
+        throw "ERROR: No method named " + name + " on component " + this.__name + "!";
+      }
+      return this[name].call(this, event);
+    },
+
+    _listenToService: function (key, service) {
+      var _this = this;
+      var self = this;
+      this.listenTo(service, "all", function (type, model, value, options) {
+        var attr,
+            path = model.__path(),
+            changed;
+        if (type.indexOf("change:") === 0) {
+          changed = model.changedAttributes();
+          for (attr in changed) {
+            // TODO: Modifying arguments array is bad. change this
+            type = "change:" + key + "." + path + (path && ".") + attr; // jshint ignore:line
+            options.service = key;
+            _this.trigger.call(_this, type, model, value, options);
+          }
+          return;
+        }
+        return _this.trigger.call(_this, type, model, value, options);
+      });
+    },
+
+    deinitialize: function () {
+      var _this2 = this;
+      if (this.consumers.length) return;
+      _.each(this.services, function (service, key) {
+        _.each(service.consumers, function (consumer, index) {
+          if (consumer.component === _this2) service.consumers.splice(index, 1);
+        });
+      });
+      delete this.services;
+      Rebound.Model.prototype.deinitialize.apply(this, arguments);
+    },
+
+    // Set is overridden on components to accept components as a valid input type.
+    // Components set on other Components are mixed in as a shared object. {raw: true}
+    // It also marks itself as a consumer of this component
+    set: function (key, val, options) {
+      var attrs, attr, serviceOptions;
+      if (typeof key === "object") {
+        attrs = key.isModel ? key.attributes : key;
+        options = val;
+      } else (attrs = {})[key] = val;
+      options || (options = {});
+
+      // If reset option passed, do a reset. If nothing passed, return.
+      if (options.reset === true) return this.reset(attrs, options);
+      if (options.defaults === true) this.defaults = attrs;
+      if (_.isEmpty(attrs)) return;
+
+      // For each attribute passed:
+      for (key in attrs) {
+        attr = attrs[key];
+        if (attr && attr.isComponent) {
+          serviceOptions || (serviceOptions = _.defaults(_.clone(options), { raw: true }));
+          attr.consumers.push({ key: key, component: this });
+          this.services[key] = attr;
+          this._listenToService(key, attr);
+          Rebound.Model.prototype.set.call(this, key, attr, serviceOptions);
+        }
+        Rebound.Model.prototype.set.call(this, key, attr, options);
+      }
+      return this;
+    },
+
     constructor: function (options) {
+      var key,
+          attr,
+          self = this;
       options = options || (options = {});
-      _.bindAll(this, "__callOnComponent");
+      _.bindAll(this, "_callOnComponent", "_listenToService", "_render");
       this.cid = _.uniqueId("component");
       this.attributes = {};
       this.changed = {};
       this.helpers = {};
+      this.consumers = [];
+      this.services = {};
       this.__parent__ = this.__root__ = this;
       this.listenTo(this, "all", this._onChange);
 
@@ -84,11 +159,11 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
       // In the model, primatives (arrays, objects, etc) are converted to Backbone Objects
       // Functions are compiled to find their dependancies and added as computed properties
       // Set our component's context with the passed data merged with the component's defaults
-      this.set(this.defaults || {}, { defaults: true });
+      this.set(this.defaults || {});
       this.set(options.data || {});
 
       // Call on component is used by the {{on}} helper to call all event callbacks in the scope of the component
-      this.helpers.__callOnComponent = this.__callOnComponent;
+      this.helpers._callOnComponent = this._callOnComponent;
 
 
       // Get any additional routes passed in from options
@@ -103,26 +178,29 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
         }
       }, this);
 
-
-      // Set our outlet and template if we have one
-      this.el = options.outlet || undefined;
+      // Set our outlet and template if we have them
+      this.el = options.outlet || document.createDocumentFragment();
       this.$el = _.isUndefined(window.Backbone.$) ? false : window.Backbone.$(this.el);
-
-      if (_.isFunction(this.createdCallback)) {
-        this.createdCallback.call(this);
-      }
+      this.template = options.template || this.template;
+      this.el.data = this;
 
       // Take our precompiled template and hydrates it. When Rebound Compiler is included, can be a handlebars template string.
       // TODO: Check if template is a string, and if the compiler exists on the page, and compile if needed
-      if (!options.template && !this.template) {
-        throw "Template must provided for " + this.__name + " component!";
+      if (this.template) {
+        this.template = typeof this.template === "object" ? hydrate(this.template) : this.template;
+
+        // Render our dom and place the dom in our custom element
+        // Template accepts [data, options, contextualElement]
+        this.el.appendChild(this.template(this, { helpers: this.helpers }, this.el));
+
+        // Add active class to this newly rendered template's link elements that require it
+        $(this.el).markLinks();
       }
-      this.template = options.template || this.template;
-      this.template = typeof this.template === "object" ? env.hydrate(this.template) : this.template;
 
-
-      // Render our dom and place the dom in our custom element
-      this.el.appendChild(this.template(this, { helpers: this.helpers }, this.el));
+      // Our Component is fully created now, but not rendered. Call created callback.
+      if (_.isFunction(this.createdCallback)) {
+        this.createdCallback.call(this);
+      }
 
       this.initialize();
     },
@@ -142,13 +220,6 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
       Backbone.Model.prototype.trigger.apply(this, arguments);
     },
 
-    __callOnComponent: function (name, event) {
-      if (!_.isFunction(this[name])) {
-        throw "ERROR: No method named " + name + " on component " + this.__name + "!";
-      }
-      return this[name].call(this, event);
-    },
-
     _onAttributeChange: function (attrName, oldVal, newVal) {},
 
 
@@ -160,7 +231,7 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
       model || (model = {});
       collection || (collection = {});
       options || (options = {});
-      !collection.isData && (options = collection) && (collection = model);
+      !collection.isData && type.indexOf("change:") === -1 && (options = collection) && (collection = model);
       this._toRender || (this._toRender = []);
 
       if (type === "reset" && options.previousAttributes || type.indexOf("change:") !== -1) {
@@ -187,6 +258,8 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
       };
       var context = this;
       var basePath = data.__path();
+      // If this event came from within a service, include the service key in the base path
+      if (options.service) basePath = options.service + "." + basePath;
       var parts = $.splitPath(basePath);
       var key, obsPath, path, observers;
 
@@ -209,10 +282,12 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
 
       // Queue our render callback to be called after the current call stack has been exhausted
       window.clearTimeout(this._renderTimeout);
-      this._renderTimeout = window.setTimeout(_.bind(renderCallback, this), 0);
+      if (this.el && this.el.testing) return this._render();
+      this._renderTimeout = window.setTimeout(this._render, 0);
     }
 
   });
+
 
   Component.extend = function (protoProps, staticProps) {
     var parent = this,
@@ -229,28 +304,10 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
       detachedCallback: 1
     };
 
+    protoProps || (protoProps = {});
+    staticProps || (staticProps = {});
     protoProps.defaults = {};
-
-    // For each property passed into our component base class
-    _.each(protoProps, function (value, key, protoProps) {
-      // If a configuration property, ignore it
-      if (configProperties[key]) {
-        return;
-      }
-
-      // If a primative or backbone type object, or computed property (function which takes no arguments and returns a value) move it to our defaults
-      if (!_.isFunction(value) || value.isModel || value.isComponent || _.isFunction(value) && value.length === 0 && value.toString().indexOf("return") > -1) {
-        protoProps.defaults[key] = value;
-        delete protoProps[key];
-      }
-
-      // If a reserved method, yell
-      if (reservedMethods[key]) {
-        throw "ERROR: " + key + " is a reserved method name in " + staticProps.__name + "!";
-      }
-
-      // All other values are component methods, leave them be unless already defined.
-    }, this);
+    // staticProps.services = {};
 
     // If given a constructor, use it, otherwise use the default one defined above
     if (protoProps && _.has(protoProps, "constructor")) {
@@ -267,6 +324,32 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
     };
     Surrogate.prototype = parent.prototype;
     child.prototype = new Surrogate();
+
+    // For each property passed into our component base class
+    for (var key in protoProps) {
+      var get = undefined,
+          set = undefined;
+
+      // If a configuration property, or not actually on the obj, ignore it
+      if (!protoProps.hasOwnProperty(key) || configProperties[key]) continue;
+
+      $.extractComputedProps(protoProps);
+
+      var value = protoProps[key];
+
+      // If a primative or backbone type object, or computed property (function which takes no arguments and returns a value) move it to our defaults
+      if (!_.isFunction(value) || value.isComputedProto || value.isModel || value.isComponent) {
+        protoProps.defaults[key] = value;
+        delete protoProps[key];
+      }
+
+      // If a reserved method, yell
+      if (reservedMethods[key]) {
+        throw "ERROR: " + key + " is a reserved method name in " + staticProps.__name + "!";
+      }
+
+      // All other values are component methods, leave them be unless already defined.
+    };
 
     // Extend our prototype with any remaining protoProps, overriting pre-defined ones
     if (protoProps) {
@@ -288,7 +371,7 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
     var proto = Object.create(HTMLElement.prototype, {});
 
     proto.createdCallback = function () {
-      this.__component__ = new component({
+      new component({
         template: template,
         outlet: this,
         data: Rebound.seedData
@@ -296,17 +379,17 @@ define("rebound-component/component", ["exports", "module", "dom-helper", "rebou
     };
 
     proto.attachedCallback = function () {
-      script.attachedCallback && script.attachedCallback.call(this.__component__);
+      script.attachedCallback && script.attachedCallback.call(this.data);
     };
 
     proto.detachedCallback = function () {
-      script.detachedCallback && script.detachedCallback.call(this.__component__);
-      this.__component__.deinitialize();
+      script.detachedCallback && script.detachedCallback.call(this.data);
+      this.data.deinitialize();
     };
 
     proto.attributeChangedCallback = function (attrName, oldVal, newVal) {
-      this.__component__._onAttributeChange(attrName, oldVal, newVal);
-      script.attributeChangedCallback && script.attributeChangedCallback.call(this.__component__, attrName, oldVal, newVal);
+      this.data._onAttributeChange(attrName, oldVal, newVal);
+      script.attributeChangedCallback && script.attributeChangedCallback.call(this.data, attrName, oldVal, newVal);
     };
 
     return document.registerElement(name, { prototype: proto });

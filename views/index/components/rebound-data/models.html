@@ -22,7 +22,7 @@ var model = new Rebound.Model({
   int: 1,
   bool: true.
   // See ComputedProperties section for details
-  func: function(){
+  get func(){
     return this.get('str');
   }
 });</code></pre>

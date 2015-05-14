@@ -18,6 +18,9 @@ var ComputedProperty = _interopRequire(require("rebound-data/computed-property")
 
 var $ = _interopRequire(require("rebound-component/utils"));
 
+
+
+
 // Returns a function that, when called, generates a path constructed from its
 // parent's path and the key it is assigned to. Keeps us from re-naming children
 // when parents change.
@@ -50,6 +53,10 @@ var Model = Backbone.Model.extend({
     this.setParent(options.parent || this);
     this.setRoot(options.root || this);
     this.__path = options.path || this.__path;
+
+    // Convert getters and setters to computed properties
+    $.extractComputedProps(attributes);
+
     Backbone.Model.call(this, attributes, options);
   },
 
@@ -72,6 +79,8 @@ var Model = Backbone.Model.extend({
     options.reset = true;
     obj = obj && obj.isModel && obj.attributes || obj || {};
     options.previousAttributes = _.clone(this.attributes);
+
+
 
     // Iterate over the Model's attributes:
     // - If the property is the `idAttribute`, skip.
@@ -163,6 +172,9 @@ var Model = Backbone.Model.extend({
     } else (attrs = {})[key] = val;
     options || (options = {});
 
+    // Convert getters and setters to computed properties
+    $.extractComputedProps(attrs);
+
     // If reset option passed, do a reset. If nothing passed, return.
     if (options.reset === true) return this.reset(attrs, options);
     if (options.defaults === true) this.defaults = attrs;
@@ -200,7 +212,8 @@ var Model = Backbone.Model.extend({
       };
       // - If val is `null` or `undefined`, set to default value.
       // - If val is a `Computed Property`, get its current cache object.
-      // - If val is `null`, set to default value or (fallback `undefined`).
+      // - If val (default value or evaluated computed property) is `null`, set to default value or (fallback `undefined`).
+      // - Else If `{raw: true}` option is passed, set the exact object that was passed. No promotion to a Rebound Data object.
       // - Else If this function is the same as the current computed property, continue.
       // - Else If this value is a `Function`, turn it into a `Computed Property`.
       // - Else If this is going to be a cyclical dependancy, use the original object, don't make a copy.
@@ -211,9 +224,9 @@ var Model = Backbone.Model.extend({
       // - Else val is a primitive value, set it accordingly.
 
 
-
       if (_.isNull(val) || _.isUndefined(val)) val = this.defaults[key];
-      if (val && val.isComputedProperty) val = val.value();else if (_.isNull(val) || _.isUndefined(val)) val = undefined;else if (destination.isComputedProperty && destination.func === val) continue;else if (_.isFunction(val)) val = new ComputedProperty(val, lineage);else if (val.isData && target.hasParent(val)) val = val;else if (destination.isComputedProperty || destination.isCollection && (_.isArray(val) || val.isCollection) || destination.isModel && (_.isObject(val) || val.isModel)) {
+      if (val && val.isComputedProperty) val = val.value();
+      if (_.isNull(val) || _.isUndefined(val)) val = undefined;else if (options.raw === true) val = val;else if (destination.isComputedProperty && destination.func === val) continue;else if (val.isComputedProto) val = new ComputedProperty(val.get, val.set, lineage);else if (val.isData && target.hasParent(val)) val = val;else if (destination.isComputedProperty || destination.isCollection && (_.isArray(val) || val.isCollection) || destination.isModel && (_.isObject(val) || val.isModel)) {
         destination.set(val, options);
         continue;
       } else if (val.isData && options.clone !== false) val = new val.constructor(val.attributes || val.models, lineage);else if (_.isArray(val)) val = new Rebound.Collection(val, lineage); // TODO: Remove global referance
@@ -246,5 +259,11 @@ var Model = Backbone.Model.extend({
   }
 
 });
+
+// If default properties are passed into extend, process the computed properties
+Model.extend = function (protoProps, staticProps) {
+  $.extractComputedProps(protoProps.defaults);
+  return Backbone.Model.extend.call(this, protoProps, staticProps);
+};
 
 module.exports = Model;

@@ -29,6 +29,7 @@ define("rebound-data/rebound-data", ["exports", "rebound-data/model", "rebound-d
             changed = model.changedAttributes();
 
         for (key in changed) {
+          // TODO: Modifying arguments array is bad. change this
           arguments[0] = "change:" + path + (path && ".") + key; // jshint ignore:line
           this.__parent__.trigger.apply(this.__parent__, arguments);
         }
@@ -75,10 +76,14 @@ define("rebound-data/rebound-data", ["exports", "rebound-data/model", "rebound-d
 
     // De-initializes a data tree starting with `this` and recursively calling `deinitialize()` on each child.
     deinitialize: function () {
+      var _this = this;
+
+
       // Undelegate Backbone Events from this data object
       if (this.undelegateEvents) this.undelegateEvents();
       if (this.stopListening) this.stopListening();
       if (this.off) this.off();
+      if (this.unwire) this.unwire();
 
       // Destroy this data object's lineage
       delete this.__parent__;
@@ -114,11 +119,14 @@ define("rebound-data/rebound-data", ["exports", "rebound-data/model", "rebound-d
       _.each(this.models, function (val) {
         val && val.deinitialize && val.deinitialize();
       });
-      _.each(this.attributes, function (val) {
-        val && val.deinitialize && val.deinitialize();
+      this.models && (this.models.length = 0);
+      _.each(this.attributes, function (val, key) {
+        delete _this.attributes[key];val && val.deinitialize && val.deinitialize();
       });
-      this.cache && this.cache.collection.deinitialize();
-      this.cache && this.cache.model.deinitialize();
+      if (this.cache) {
+        this.cache.collection.deinitialize();
+        this.cache.model.deinitialize();
+      }
     }
   };
 

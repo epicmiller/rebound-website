@@ -147,7 +147,60 @@
 {{if 1 "{{debugger}}" }}</code></pre>
 
 
+    <h2 id="writing-helpers">Writing Helpers</h2>
+      <p>You can also define your own helpers to use in your Rebound templates.
+         Rebound exposes a global <code>Rebound.registerHelper('name', function)</code> method.</p>
+
+      <p>I'll tell you more details on how to do it when I figure it out myself ;P</p>
+
+
+
+    <h2 id="templates-databinding">Automatic Data Binding</h2>
+      <p>Automatic data binding is one of the largest benefits of Rebound templates.
+         Data binding means that as the underlying data and computed properties used to render your template change,
+         your DOM will update itself automatically to reflect your application's new state.</p>
+
+      <p>Expressions inlined into your templates will be updated with new values,
+         lists rendered with <code>{{if 1 "{{#each}}"}}</code> and lengths output
+         with <code>{{if 1 "{{length}}"}}</code> will update themselves as models are added or removed,
+         logical helpers like <code>{{if 1 "{{#if}}"}}</code> and <code>{{if 1 "{{#unless}}"}}</code> will re-evaluate as dependancies change,
+         and any user-defined helpers will also be bound to their inputs, and re-evaluate when needed.</p>
+
+      <p>As users modify form elements in the browser, Rebound will automatically keep your data in sync with the state of the DOM.
+         Input elements' <code>value</code> fields and checkbox and radio buttons'
+         <code>checked</code> properties will automatically update the data values they are bound to.</p>
+
+         <p>For example, this template:</p>
+
+<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
+{{if 1 "<p>Trainer {{firstName}} {{lastName}} is" }}
+{{if 1 "   {{if master 'a Pokemon master!' 'not a Pokemon master...yet!'}}</p>" }}
+
+{{if 1 '<label for="firstName">First Name:</label>' }}
+{{if 1 '<input id="firstName" value="{{firstName}}">' }}
+
+{{if 1 '<label for="lastName">Last Name:</label>' }}
+{{if 1 '<input id="lastName" value="{{lastName}}">' }}
+
+{{if 1 '<label for="isMaster">Is a Master:</label>' }}
+{{if 1 '<input type="checkbox" id="isMaster" checked="{{master}}">' }}</code></pre>
+
+      <p>Generates this demo to help you better understand data binding:</p>
+
+      <form class="demo" style="text-align:center;">
+        <h4>Trainer {{firstName}} {{lastName}} {{if master 'is a Pokemon master!' 'is not a Pokemon master...yet!'}}</h4>
+        <p><label for="firstName">First Name:</label>
+        <input id="firstName" value="{{firstName}}"></p>
+        <p><label for="lastName">Last Name:</label>
+        <input id="lastName" value="{{lastName}}"></p>
+        <p><label for="isMaster">Is a Master:</label>
+        <input type="checkbox" id="isMaster" checked="{{master}}"></p>
+      </form>
 
   </template>
-  <script>return {}</script>
+  <script>return {
+    firstName: 'Adam',
+    lastName: 'Miller',
+    master: true
+  }</script>
 </element>

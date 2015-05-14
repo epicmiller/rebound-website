@@ -5,10 +5,10 @@
 
       <h2 id="data-computedproperty">Computed Properties</h2>
 
-      <p>Computed Properties let you declare functions as properties.
-         You create one by setting a Function as a property on one of your Models.
-         Rebound will automatically promote this to a Computed Property and you
-         can then use it the same way you would any normal, static property.</p>
+      <p>Computed Properties use es5 getter and setter syntax to let you declare
+         functions as properties on your Models. Rebound will automatically
+         promote this to a Computed Property and you can access them the same
+         way you would any normal, static property.</p>
 
       <p>Computed Properties will automatically re-evaluate when any of its dependancies
          are modified, triggering the appropreate <code>change</code>,
@@ -26,7 +26,7 @@ var Person = Rebound.Model.extend({
     firstName: null,
     lastName: null,
 
-    fullName: function() {
+    get fullName() {
       return this.get('firstName') + ' ' + this.get('lastName');
     }
   }
@@ -51,11 +51,11 @@ var Person = Rebound.Model.extend({
     age: null,
     country: null,
 
-    fullName: function() {
+    get fullName() {
       return this.get('firstName') + ' ' + this.get('lastName');
     },
 
-    description: function() {
+    get description() {
       return this.get('fullName') + '; Age: ' + this.get('age') + '; Country: ' + this.get('country');
     }
   }
@@ -100,11 +100,11 @@ var Person = Rebound.Model.extend({
    lastName: null,
    descriptions: [],
 
-   happy: function(){
+   get happy(){
      return this.get('descriptions[0]');
    },
 
-   angry: function(){
+   get angry(){
      return this.get('descriptions[1]');
    }
  }

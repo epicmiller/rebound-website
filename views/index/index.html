@@ -44,7 +44,6 @@
         <a href="/templates/overview" class="nav-item">Overview</a>
         <a href="/templates/basics" class="nav-item">Basic Use</a>
         <a href="/templates/expressions" class="nav-item">Expressions</a>
-        <a href="/templates/databinding" class="nav-item">Automatic Data Binding</a>
         <a href="/templates/helpers" class="nav-item">Helpers</a>
         <a href="/helpers" class="nav-item">Built In Helpers</a>
           <a href="/helpers/length" class="subnav-item">length</a>
@@ -56,13 +55,15 @@
           <a href="/dev-helpers/log" class="subnav-item">log</a>
           <a href="/dev-helpers/debugger" class="subnav-item">debugger</a>
         <a href="/writing-helpers" class="nav-item">Writing Your Own Helpers</a>
+        <a href="/templates/databinding" class="nav-item">Automatic Data Binding</a>
 
       <h2>Components</h2>
+        <a href="/components/overview" class="nav-item">Overview</a>
         <a href="/components" class="nav-item">Custom Elements</a>
 
 
       <h2>Routing</h2>
-      <a href="/routing" class="nav-item">Routable Components</a>
+        <a href="/routing" class="nav-item">Routable Components</a>
 
     </nav>
 
@@ -88,6 +89,8 @@
       <rebound-templates-basic></rebound-templates-basic>
       <rebound-templates-helpers></rebound-templates-helpers>
 
+      <h1 id="components-overview">Rebound Components</h1>
+      <p>In Rebound, everything you write is a Component.</p>
 
     </main>
 
@@ -121,10 +124,33 @@
 
       attachedCallback: function(){
 
-        var that = this,
+        var main = this.el.getElementsByTagName('main')[0];
+        var headers = [];
+        var h1 = Array.prototype.slice.call(main.querySelectorAll('h1'));
+        var h2 = Array.prototype.slice.call(main.querySelectorAll('h2'));
+        var h3 = Array.prototype.slice.call(main.querySelectorAll('h3'));
+
+        headers = headers.concat(h1);
+        headers = headers.concat(h2);
+        headers = headers.concat(h3);
+        var scrollPosition = 0;
+        var that = this;
+        var active = headers[0];
             scrollCallback = function(){
-              that.set('scrollPosition', window.scrollY);
               window.requestAnimationFrame(scrollCallback);
+              that.set('scrollPosition', window.scrollY);
+              if(scrollPosition === window.scrollY) return;
+              scrollPosition = window.scrollY;
+              var smallest = -999999999;
+              headers.forEach(function(el){
+                var top = el.getBoundingClientRect().top
+                if(top <= 0 && top > smallest){
+                  smallest = top;
+                  active = el;
+                }
+              });
+              console.log(active.id.replace('-', '/'));
+              // Rebound.router.navigate(active.id.replace(/-/g, '/'));
             };
 
         scrollCallback();
@@ -135,7 +161,7 @@
     /*********** Controller Default Properties **************/
 
       scrollPosition: 0,
-      menuOffset: function(){
+      get menuOffset(){
         var pos = this.get('scrollPosition');
         return (pos >=233) ? 0 : 233 - pos;
       },
@@ -144,8 +170,26 @@
 
     /************** Controller Functions *****************/
 
-      route: function(event){
+      route: function(path, args){
+        console.log(arguments);
         smoothScroll.animateScroll( null, '#'+(Backbone.history.fragment.replace(/\//g, '-') || 'top'), {updateURL: false});
+
+        var old = document.querySelectorAll('a.nav-item.active')[0];
+        old && old.classList.remove('active');
+
+        var el = document.querySelectorAll('a.subnav-item.active')[0];
+        el = (window.event) ? window.event.target : el;
+        if(!el) return;
+        do{
+          if(el.classList.contains('nav-item')){
+            el.classList.add('active');
+            return;
+          }
+        }while(el = el.previousElementSibling)
+      },
+
+      highlight: function(event){
+
       }
 
     })
