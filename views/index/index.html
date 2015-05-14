@@ -171,14 +171,12 @@
     /************** Controller Functions *****************/
 
       route: function(path, args){
-        console.log(arguments);
         smoothScroll.animateScroll( null, '#'+(Backbone.history.fragment.replace(/\//g, '-') || 'top'), {updateURL: false});
 
         var old = document.querySelectorAll('a.nav-item.active')[0];
         old && old.classList.remove('active');
 
-        var el = document.querySelectorAll('a.subnav-item.active')[0];
-        el = (window.event) ? window.event.target : el;
+        var el = document.querySelectorAll('.subnav a[href="/' + Backbone.history.fragment + '"]')[0];
         if(!el) return;
         do{
           if(el.classList.contains('nav-item')){
