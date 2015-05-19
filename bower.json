@@ -31,7 +31,7 @@
     "requirejs": "~2.1.14",
     "almond": "0.2.9",
     "fontawesome": "4.3.0",
-    "reboundjs": "0.0.77",
+    "reboundjs": "0.0.78",
     "smooth-scroll": "https://github.com/cferdinandi/smooth-scroll.git"
   }
 }

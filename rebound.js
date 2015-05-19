@@ -60,9 +60,21 @@
 
   // Page Request Routes
   app.get('/', home.index);
-  app.get('/home', home.index);
+  app.get('/start(/*)', home.index);
+  app.get('/data(/*)', home.index);
+  app.get('/templates(/*)', home.index);
+  app.get('/helpers(/*)', home.index);
+  app.get('/dev-helpers(/*)', home.index);
+  app.get('/writing-helpers(/*)', home.index);
+  app.get('/components(/*)', home.index);
+  app.get('/routing(/*)', home.index);
+  app.get('/home(/*)', home.index);
   app.post('/git/push', git.push);
-  app.get('/*', home.index);
+  app.get('/*', function(req, res, next){
+    console.log('404!!!!');
+    res.status(404);
+    res.type('txt').send('Not found');
+  });
 
 
 

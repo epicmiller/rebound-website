@@ -15,7 +15,7 @@
 
     <nav class="subnav fixed" style="height: calc(100vh - {{menuOffset}}px); top: {{menuOffset}}px;" {{on 'click' 'a' 'highlight'}}>
       <h2>ReboundJS</h2>
-        <a href="/" class="nav-item selected">Overview</a>
+        <a href="/asdf" class="nav-item selected">Overview</a>
         <a href="/start" class="nav-item">Getting Started</a>
 
       <h2>Data</h2>
@@ -111,7 +111,14 @@
 
       routes: {
         '': 'route',
-        ':route(/*actions)': 'route'
+        'start': 'route',
+        'data(/*actions)': 'route',
+        'templates(/*actions)': 'route',
+        'helpers(/*actions)': 'route',
+        'dev-helpers(/*actions)': 'route',
+        'writing-helpers(/*actions)': 'route',
+        'components(/*actions)': 'route',
+        'routing(/*actions)': 'route'
       },
 
       createdCallback: function(){
