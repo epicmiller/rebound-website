@@ -19,6 +19,7 @@ node_modules
 public/stylesheets
 public/templates
 public/javascripts/vendor
+public/vendor
 public/javascripts/lib/collegia.framework.js
 public/tmp
 public/vendor
