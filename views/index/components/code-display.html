@@ -1,0 +1,39 @@
+<element name="code-display">
+  <template>
+    <pre data-src="prism.js" class="line-numbers"><code class="language-{{type}}"><content></content></code></pre>
+  </template>
+  <script>
+    return ({
+
+      /********* Lifecycle Methods ********/
+      attachedCallback: function(event){
+        this.removeIndent();
+        this.colorize();
+      },
+
+      /********* Config Options ********/
+      // Any of these special config options would go here:
+      // routes, outlet, url, urlRoot, idAttributes, id
+
+      /********* Default Properties ********/
+      type: 'javascript',
+
+      /********* Component Methods ********/
+      colorize: function(event){
+        window.Prism && window.Prism.highlightElement(this.el.getElementsByTagName('code')[0]);
+      },
+
+      removeIndent: function(){
+        var outlet = this.el.getElementsByTagName('content')[0];
+        var i = 0, str = '^';
+        while(outlet.textContent[i].match(/\s/)){
+          if(outlet.textContent[i] == ' ') str += ' ';
+          i++;
+        }
+        var regex = new RegExp(str, 'mg');
+        outlet.textContent = outlet.textContent.replace(regex, "").trim();
+      }
+
+    })
+  </script>
+</element>

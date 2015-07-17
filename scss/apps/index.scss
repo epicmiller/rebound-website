@@ -17,7 +17,7 @@ rebound-home{
   position: relative;
   z-index: 1;
 
-  nav.subnav{
+  nav.subnav[rebound-home]{
     @include flex-grid(6);
     border-right: 1px solid #ccc;
     display: block;

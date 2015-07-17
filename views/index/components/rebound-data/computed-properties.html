@@ -1,131 +1,134 @@
 <element name="rebound-data-computed-properties">
   <template>
 
+    <h2 id="data-computedproperty">Computed Properties</h2>
 
+    <p>Computed Properties use es5 getter and setter syntax to let you declare
+       functions as properties on your Models. Rebound will automatically
+       promote this to a Computed Property and you can access them the same
+       way you would any normal, static property.</p>
 
-      <h2 id="data-computedproperty">Computed Properties</h2>
+    <p>Computed Properties will automatically re-evaluate when any of its dependancies
+       are modified, triggering the appropreate <code>change</code>,
+       <code>add</code> and <code>remove</code> events.</p>
 
-      <p>Computed Properties use es5 getter and setter syntax to let you declare
-         functions as properties on your Models. Rebound will automatically
-         promote this to a Computed Property and you can access them the same
-         way you would any normal, static property.</p>
+    <h3 id="data-computedproperty-basics">Basic Use</h3>
 
-      <p>Computed Properties will automatically re-evaluate when any of its dependancies
-         are modified, triggering the appropreate <code>change</code>,
-         <code>add</code> and <code>remove</code> events.</p>
+    <p>It's super handy for taking one or more normal properties and transforming
+      or manipulating their data to create a new value.</p>
 
-      <h3 id="data-computedproperty-basics">Basic Use</h3>
+    <code-display type="javascript">
+      var Person = Rebound.Model.extend({
+        defaults: {
+          // these will be supplied by `create`
+          firstName: null,
+          lastName: null,
 
-      <p>It's super handy for taking one or more normal properties and transforming
-        or manipulating their data to create a new value.</p>
+          get fullName() {
+            return this.get('firstName') + ' ' + this.get('lastName');
+          }
+        }
+      });
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-var Person = Rebound.Model.extend({
-  defaults: {
-    // these will be supplied by `create`
-    firstName: null,
-    lastName: null,
+      var ironMan = new Person({
+        firstName: "Tony",
+        lastName:  "Stark"
+      });
 
-    get fullName() {
-      return this.get('firstName') + ' ' + this.get('lastName');
-    }
-  }
-});
-
-var ironMan = new Person({
-  firstName: "Tony",
-  lastName:  "Stark"
-});
-
-ironMan.get('fullName'); // "Tony Stark"</code></pre>
+      ironMan.get('fullName'); // "Tony Stark"
+    </code-display>
 
 
     <h3 id="data-computedproperty-chaining">Chaining Computed Properties</h3>
     <p>Computed Properties can also depend on other computed properties</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-var Person = Rebound.Model.extend({
-  defaults: {
-    firstName: null,
-    lastName: null,
-    age: null,
-    country: null,
+    <code-display type="javascript">
+      var Person = Rebound.Model.extend({
+        defaults: {
+          firstName: null,
+          lastName: null,
+          age: null,
+          country: null,
 
-    get fullName() {
-      return this.get('firstName') + ' ' + this.get('lastName');
-    },
+          get fullName() {
+            return this.get('firstName') + ' ' + this.get('lastName');
+          },
 
-    get description() {
-      return this.get('fullName') + '; Age: ' + this.get('age') + '; Country: ' + this.get('country');
-    }
-  }
-});
+          get description() {
+            return this.get('fullName') + '; Age: ' + this.get('age') + '; Country: ' + this.get('country');
+          }
+        }
+      });
 
-var captainAmerica = new Person({
-  firstName: 'Steve',
-  lastName: 'Rogers',
-  age: 80,
-  country: 'USA'
-});
+      var captainAmerica = new Person({
+        firstName: 'Steve',
+        lastName: 'Rogers',
+        age: 80,
+        country: 'USA'
+      });
 
-captainAmerica.get('description'); // "Steve Rogers; Age: 80; Country: USA"</code></pre>
+      captainAmerica.get('description'); // "Steve Rogers; Age: 80; Country: USA"
+    </code-display>
 
-      <h3 id="data-computedproperty-updating">Dynamic Updating</h3>
+    <h3 id="data-computedproperty-updating">Dynamic Updating</h3>
 
-      <p>Computed properties, by default, observe any changes made to the
-         properties they depend on and are dynamically updated when they're called.
-         Lets test this out.</p>
+    <p>Computed properties, by default, observe any changes made to the
+       properties they depend on and are dynamically updated when they're called.
+       Lets test this out.</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-captainAmerica.set('firstName', 'William');
+    <code-display type="javascript">
+      captainAmerica.set('firstName', 'William');
 
-captainAmerica.get('description'); // "William Rogers; Age: 80; Country: USA"</code></pre>
+      captainAmerica.get('description'); // "William Rogers; Age: 80; Country: USA"
+    </code-display>
 
 
-      <p>This change to firstName was observed by fullName computed property,
-         which was itself observed by the description property.</p>
+    <p>This change to firstName was observed by fullName computed property,
+       which was itself observed by the description property.</p>
 
-      <p>Setting any dependent property will propagate changes through any
-         computed properties that depend on them, all the way down the chain of
-         computed properties you've created.</p>
+    <p>Setting any dependent property will propagate changes through any
+       computed properties that depend on them, all the way down the chain of
+       computed properties you've created.</p>
 
-       <h3 id="data-computedproperty-complex-objects">Returning Complex Objects</h3>
-       <p>Computed properties are also able to operate on and return Models and Collections.</p>
+    <h3 id="data-computedproperty-complex-objects">Returning Complex Objects</h3>
+    <p>Computed properties are also able to operate on and return Models and Collections.</p>
 
-      <p>An example returning a Model</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-var Person = Rebound.Model.extend({
- defaults: {
-   firstName: null,
-   lastName: null,
-   descriptions: [],
+    <p>An example returning a Model</p>
 
-   get happy(){
-     return this.get('descriptions[0]');
-   },
+    <code-display type="javascript">
+      var Person = Rebound.Model.extend({
+       defaults: {
+         firstName: null,
+         lastName: null,
+         descriptions: [],
 
-   get angry(){
-     return this.get('descriptions[1]');
-   }
- }
-});
+         get happy(){
+           return this.get('descriptions[0]');
+         },
 
-var hulk = new Person({
-  firstName: 'Bruce',
-  lastName: 'Banner',
-  descriptions: [{
-    color: 'pink',
-    height: '5ft 11in',
-    weight: '220lbs'
-  }, {
-    color: 'green',
-    height: '8ft',
-    weight: '1400lbs'
-  }]
-});
+         get angry(){
+           return this.get('descriptions[1]');
+         }
+       }
+      });
 
-hulk.get('angry'); // {color: 'green', height: '8ft', wieght: '1400lbs'}
-hulk.get('happy.color'); // "pink"</code></pre>
+      var hulk = new Person({
+        firstName: 'Bruce',
+        lastName: 'Banner',
+        descriptions: [{
+          color: 'pink',
+          height: '5ft 11in',
+          weight: '220lbs'
+        }, {
+          color: 'green',
+          height: '8ft',
+          weight: '1400lbs'
+        }]
+      });
+
+      hulk.get('angry'); // {color: 'green', height: '8ft', wieght: '1400lbs'}
+      hulk.get('happy.color'); // "pink"
+    </code-display>>
 
 
   </template>

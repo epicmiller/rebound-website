@@ -4,19 +4,20 @@
     <h2 id="start">Awesome! How do I use it?</h2>
     <p>You can include Rebound on your page like this:</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-markup">
-&lt;script src="/javascripts/lib/rebound.runtime.js" id="Rebound"&gt;
-{
-  "root": "/",
-  "globalComponents": {"chrome" : "nav"},
-  "jsPath": "/javascripts/apps/:route/:app.js",
-  "cssPath": "/stylesheets/apps/:app.css",
-  "triggerOnFirstLoad": true,
-  "routeMapping": {
-    "": "home"
-  }
-}
-&lt;/script&gt;</code></pre>
+    <code-display type="markup">
+      &lt;script src="/javascripts/lib/rebound.runtime.js" id="Rebound"&gt;
+      {
+        "root": "/",
+        "services": {"chrome" : "nav"},
+        "jsPath": "/javascripts/apps/:route/:app.js",
+        "cssPath": "/stylesheets/apps/:app.css",
+        "triggerOnFirstLoad": true,
+        "routeMapping": {
+          "": "home"
+        }
+      }
+      &lt;/script&gt;
+    </code-display>
 
     <p>Because the Rebound script tag contains a src, nothing inside it gets executed, but is still accessable to the page as $('#Rebound').html().
        We take advantage of this to load Rebound's router config options right where you include the Rebound library itself. Convenient!

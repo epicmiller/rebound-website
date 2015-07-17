@@ -1,138 +1,145 @@
 <element name="rebound-data-models">
   <template>
 
-      <h2 id="data-model">Models</h2>
-      <p><b>Rebound Models</b> are the most basic data object in the framework — frequently representing a row in a table in a database on your server.
-         The inherit from <a href="http://backbonejs.org/#Model">Backbone Models</a> and have all of the same useful methods you are used to for performing computations and transformations on that data.
-         Rebound augments Backbone Models by enabling <b>deep data nesting</b>. You can now have both <b>Rebound Collections</b> and <b>Rebound Computed Properties</b> as properties of a Model.</p>
+    <h2 id="data-model">Models</h2>
+    <p><b>Rebound Models</b> are the most basic data object in the framework — frequently representing a row in a table in a database on your server.
+       The inherit from <a href="http://backbonejs.org/#Model">Backbone Models</a> and have all of the same useful methods you are used to for performing computations and transformations on that data.
+       Rebound augments Backbone Models by enabling <b>deep data nesting</b>. You can now have both <b>Rebound Collections</b> and <b>Rebound Computed Properties</b> as properties of a Model.</p>
 
-      <h3 id="data-model-constructor">constructor / initialize <code>new Rebound.Model([attributes], [options])</code></h3>
-      <p>When creating an instance of a model, you can pass in the initial values of the attributes, which will be set on the model.
-         Rebound.Model's constructor now accepts any valid JSON structure where arrays only contain hashes.</p>
-      <p>These values are promoted to their respective Rebound data structures. Arrays become Collections, Hashes become Models and Functions are promoted to Computed Properties.</p>
-      <p>If you define an initialize function, it will be invoked when the model is created.</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-var model = new Rebound.Model({
-  arr: [{val: 0}, {val: 1}, {val: 2}],
-  obj: {
-    prop: 'foo',
-    arr: []
-  },
-  str: 'string',
-  int: 1,
-  bool: true.
-  // See ComputedProperties section for details
-  get func(){
-    return this.get('str');
-  }
-});</code></pre>
+    <h3 id="data-model-constructor">constructor / initialize <code>new Rebound.Model([attributes], [options])</code></h3>
+    <p>When creating an instance of a model, you can pass in the initial values of the attributes, which will be set on the model.
+       Rebound.Model's constructor now accepts any valid JSON structure where arrays only contain hashes.</p>
+    <p>These values are promoted to their respective Rebound data structures. Arrays become Collections, Hashes become Models and Functions are promoted to Computed Properties.</p>
+    <p>If you define an initialize function, it will be invoked when the model is created.</p>
 
-      <h3 id="data-model-get">get <code>model.get(path)</code></h3>
-      <p>Backbone's <b>Model.get</b> method has been extended to allow for deep retreival of data using JSON or Handlebars syntax. Multiple may be strung together for the same effect.</p>
-      <p>Using the model we have created above:</p>
+    <code-display type="javascript">
+      var model = new Rebound.Model({
+        arr: [{val: 0}, {val: 1}, {val: 2}],
+        obj: {
+          prop: 'foo',
+          arr: []
+        },
+        str: 'string',
+        int: 1,
+        bool: true.
+        // See ComputedProperties section for details
+        get func(){
+          return this.get('str');
+        }
+      });
+    </code-display>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-model.get('bool');           // Returns true
-model.get('func');           // Returns 'string'
-model.get('arr');            // Returns the Rebound Collection
-model.get('arr[1].val');     // Returns 1
-model.get('arr.1.val');      // Returns 1
-model.get('obj');            // Returns the Rebound Model
-model.get('obj.prop');       // Returns 'foo'
-model.get('obj').get('prop') // Returns 'foo'</code></pre>
+    <h3 id="data-model-get">get <code>model.get(path)</code></h3>
+    <p>Backbone's <b>Model.get</b> method has been extended to allow for deep retreival of data using JSON or Handlebars syntax. Multiple may be strung together for the same effect.</p>
+    <p>Using the model we have created above:</p>
 
-      <h3 id="data-model-set">set <code>model.set(attributes, [options])</code></h3>
-      <p>Similarly, <b>Model.set</b> has been extended to allow for deep setting
-         of data using JSON or Handlebars syntax. Like Model constructors, you
-         can pass set a JSON object and Rebound will do a deep merge of the data
-         and promote any vanilla Arrays, Hashes or Functions.</p>
-      <p>If any of the attributes change the model's state, a <code>change</code>
-         event will be triggered on the model. Change events for specific attributes
-         are also triggered, and you can bind to those as well, for example:
-         <code>change:bool</code>, and <code>change:str</code>.</p>
-      <p>Named change events are propagated up the data tree and can be bound to using the relative path.
-          For example: if <code>arr[0].val</code> is modified, a <code>change:val</code>
-          event is triggered on <code>arr[0]</code>, a <code>change:[0].val</code>
-          event is triggered on <code>arr</code>, and a <code>change:arr[0].val</code>
-          event is triggered on the root model.</p>
-      <p>If <code>{silent: true}</code> is passed as an option, no events will be fired.</p>
-      <p>Using the model we have created above:</p>
+    <code-display type="javascript">
+      model.get('bool');           // Returns true
+      model.get('func');           // Returns 'string'
+      model.get('arr');            // Returns the Rebound Collection
+      model.get('arr[1].val');     // Returns 1
+      model.get('arr.1.val');      // Returns 1
+      model.get('obj');            // Returns the Rebound Model
+      model.get('obj.prop');       // Returns 'foo'
+      model.get('obj').get('prop') // Returns 'foo'
+    </code-display>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-model.set('bool', false);    // Sets `bool` to false
-model.set('arr[1].val', 3);  // Sets the second element in arr's value to 3
-model.set('arr.1.val', 4);   // Sets the second element in arr's value back to 1
-model.set('obj, {            // Adds an object to obj's array and adds property `bool`
-  arr: [{val: 0}],
-  bool: true
-});
-model.get('obj').set('prop', 'bar') // Sets `obj.prop` to 'bar'</code></pre>
+    <h3 id="data-model-set">set <code>model.set(attributes, [options])</code></h3>
+    <p>Similarly, <b>Model.set</b> has been extended to allow for deep setting
+       of data using JSON or Handlebars syntax. Like Model constructors, you
+       can pass set a JSON object and Rebound will do a deep merge of the data
+       and promote any vanilla Arrays, Hashes or Functions.</p>
+    <p>If any of the attributes change the model's state, a <code>change</code>
+       event will be triggered on the model. Change events for specific attributes
+       are also triggered, and you can bind to those as well, for example:
+       <code>change:bool</code>, and <code>change:str</code>.</p>
+    <p>Named change events are propagated up the data tree and can be bound to using the relative path.
+        For example: if <code>arr[0].val</code> is modified, a <code>change:val</code>
+        event is triggered on <code>arr[0]</code>, a <code>change:[0].val</code>
+        event is triggered on <code>arr</code>, and a <code>change:arr[0].val</code>
+        event is triggered on the root model.</p>
+    <p>If <code>{silent: true}</code> is passed as an option, no events will be fired.</p>
+    <p>Using the model we have created above:</p>
 
-      <p><b>Model.set</b> can also accept a hash of properties to update:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-model.set({
-  'bool': true,
-  'arr[1].val': 1
-  'obj.bool': false
-);</code></pre>
+    <code-display type="javascript">
+      model.set('bool', false);    // Sets `bool` to false
+      model.set('arr[1].val', 3);  // Sets the second element in arr's value to 3
+      model.set('arr.1.val', 4);   // Sets the second element in arr's value back to 1
+      model.set('obj, {            // Adds an object to obj's array and adds property `bool`
+        arr: [{val: 0}],
+        bool: true
+      });
+      model.get('obj').set('prop', 'bar') // Sets `obj.prop` to 'bar'
+    </code-display>
 
-      <h3 id="data-model-toggle">toggle <code>model.get(path, [options])</code></h3>
-      <p>A new convenience method, <b>Model.toggle</b>, will toggle the value of boolean properties. A <code>change</code> event will be fired.</p>
-      <p>Using the model we have created above:</p>
+    <p><b>Model.set</b> can also accept a hash of properties to update:</p>
+    <code-display type="javascript">
+      model.set({
+        'bool': true,
+        'arr[1].val': 1
+        'obj.bool': false
+      );
+    </code-display>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-model.toggle('bool');    // Sets `bool` to false
-model.toggle('bool');    // Sets `bool` to true</code></pre>
+    <h3 id="data-model-toggle">toggle <code>model.get(path, [options])</code></h3>
+    <p>A new convenience method, <b>Model.toggle</b>, will toggle the value of boolean properties. A <code>change</code> event will be fired.</p>
+    <p>Using the model we have created above:</p>
 
-
-      <h3 id="data-model-tojson">toJSON <code>model.toJSON()</code></h3>
-      <p><b>Model.toJSON</b> has been extended to return a deep, cyclic dependancy safe, copy of the model. <a href="/computedProperties">Computed Properties</a> are evaluated.</p>
-      <p>Using the model we have created above:</p>
-
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-model.toJSON();
-
-//  Returns:
-{
-  arr: [{val: 0}, {val: 1}, {val: 2}],
-  obj: {
-    prop: 'bar',
-    bool: false,
-    arr: [{val: 0}]
-  },
-  str: 'string'
-  int: 1,
-  bool: true,
-  func: 'string'
-}</code></pre>
+    <code-display type="javascript">
+      model.toggle('bool');    // Sets `bool` to false
+      model.toggle('bool');    // Sets `bool` to true
+    </code-display>
 
 
-      <h3 id="data-model-reset">reset <code>model.reset([attributes], [options])</code></h3>
-      <p>Models now have a, <b>Model.reset</b> property. Calling reset on a model
-         will set its primitive properties back to their defaults, call reset on
-         all complex objects it contains, unset any values without defaults, and
-         set its properties to the new values in the JSON blob passed to reset.</p>
-      <p>A single "reset" event is triggered at the end. Returns the model.
-         For convenience, within a model "reset" event, the list of previous attributes is available as options.previousAttributes.</p>
-      <p>Computed properties are not removed and will reflect the changes to the properties they depend on.</p>
-      <p>Using the model we have created above:</p>
+    <h3 id="data-model-tojson">toJSON <code>model.toJSON()</code></h3>
+    <p><b>Model.toJSON</b> has been extended to return a deep, cyclic dependancy safe, copy of the model. <a href="/computedProperties">Computed Properties</a> are evaluated.</p>
+    <p>Using the model we have created above:</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-model.reset({
-  arr: [{val: 0}],
-  bool: false
-});
+    <code-display type="javascript">
+      model.toJSON();
 
-//  Because our model had no defaults, model now contians:
-//  {
-//    arr: [{val: 0}],
-//    obj: {},
-//    bool: false,
-//    func: function(){
-//      return this.get('str'); // Evaluates to undefined
-//    }
-//  }</code></pre>
+      //  Returns:
+      {
+        arr: [{val: 0}, {val: 1}, {val: 2}],
+        obj: {
+          prop: 'bar',
+          bool: false,
+          arr: [{val: 0}]
+        },
+        str: 'string'
+        int: 1,
+        bool: true,
+        func: 'string'
+      }
+    </code-display>
 
+
+    <h3 id="data-model-reset">reset <code>model.reset([attributes], [options])</code></h3>
+    <p>Models now have a, <b>Model.reset</b> property. Calling reset on a model
+       will set its primitive properties back to their defaults, call reset on
+       all complex objects it contains, unset any values without defaults, and
+       set its properties to the new values in the JSON blob passed to reset.</p>
+    <p>A single "reset" event is triggered at the end. Returns the model.
+       For convenience, within a model "reset" event, the list of previous attributes is available as options.previousAttributes.</p>
+    <p>Computed properties are not removed and will reflect the changes to the properties they depend on.</p>
+    <p>Using the model we have created above:</p>
+
+    <code-display type="javascript">
+      model.reset({
+        arr: [{val: 0}],
+        bool: false
+      });
+
+      //  Because our model had no defaults, model now contians:
+      //  {
+      //    arr: [{val: 0}],
+      //    obj: {},
+      //    bool: false,
+      //    func: function(){
+      //      return this.get('str'); // Evaluates to undefined
+      //    }
+      //  }
+    </code-display>
 
   </template>
   <script>return {}</script>

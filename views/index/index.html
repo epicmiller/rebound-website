@@ -1,8 +1,12 @@
 <element name="rebound-home">
   <template>
 
+    <link rel="import" href="index/components/code-display.html">
+
     <link rel="import" href="index/components/overview.html">
     <link rel="import" href="index/components/getting-started.html">
+
+    <link rel="import" href="index/components/rebound-components/structure.html">
 
     <link rel="import" href="index/components/rebound-data/events.html">
     <link rel="import" href="index/components/rebound-data/models.html">
@@ -13,10 +17,14 @@
     <link rel="import" href="index/components/rebound-templates/helpers.html">
 
 
-    <nav class="subnav fixed" style="height: calc(100vh - {{menuOffset}}px); top: {{menuOffset}}px;" {{on 'click' 'a' 'highlight'}}>
+    <nav rebound-home class="subnav fixed" style="height: calc(100vh - {{menuOffset}}px); top: {{menuOffset}}px;" {{on 'click' 'a' 'highlight'}}>
       <h2>ReboundJS</h2>
-        <a href="/asdf" class="nav-item selected">Overview</a>
+        <a href="/" class="nav-item selected">Overview</a>
         <a href="/start" class="nav-item">Getting Started</a>
+
+      <h2>Components</h2>
+        <a href="/components/overview" class="nav-item">Overview</a>
+        <a href="/components/structure" class="nav-item">Structure</a>
 
       <h2>Data</h2>
         <a href="/data/overview" class="nav-item">Overview</a>
@@ -57,11 +65,6 @@
         <a href="/writing-helpers" class="nav-item">Writing Your Own Helpers</a>
         <a href="/templates/databinding" class="nav-item">Automatic Data Binding</a>
 
-      <h2>Components</h2>
-        <a href="/components/overview" class="nav-item">Overview</a>
-        <a href="/components" class="nav-item">Custom Elements</a>
-
-
       <h2>Routing</h2>
         <a href="/routing" class="nav-item">Routable Components</a>
 
@@ -71,6 +74,15 @@
 
       <rebound-home-overview version="{{versions.[0]}}"></rebound-home-overview>
       <rebound-getting-started></rebound-getting-started>
+
+      <h1 id="components-overview">Rebound Components</h1>
+      <p>Rebound is a Model-View-Component library. This means the basic building
+        blocks of Rebound are data bound components which leverage the W3 Custom
+        Elements spec.</p>
+      <p>Custom Elements are a powerful tool which allows you to define custom
+         HTML tags that encapsulate functionality.</p>
+
+      <rebound-components-structure></rebound-components-structure>
 
       <h1 id="data-overview">Rebound Data</h1>
       <p>Rebound extends Backbone's powerful data objects to allow for <b>deep nesting</b> and adds <b>Computed Properties</b> into the mix, offering you a whole new level of power and flexibility.</p>
@@ -88,9 +100,6 @@
 
       <rebound-templates-basic></rebound-templates-basic>
       <rebound-templates-helpers></rebound-templates-helpers>
-
-      <h1 id="components-overview">Rebound Components</h1>
-      <p>In Rebound, everything you write is a Component.</p>
 
     </main>
 
@@ -161,7 +170,7 @@
             };
 
         scrollCallback();
-        Prism.highlightAll();
+        // Prism.highlightAll();
 
       },
 

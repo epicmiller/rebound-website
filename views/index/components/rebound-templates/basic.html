@@ -5,38 +5,44 @@
 
     <p>This is one of the simplest expressions you can write:</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<h1>{{title}}</h1>"}}</code></pre>
+    <code-display type="handlebars">
+      {{if 1 "<h1>{{title}}</h1>"}}
+    </code-display>
 
     <p>Each template is rendered in the context of a corrosponding Rebound Data object.</p>
     <p>The above template would look up the <code>title</code> property in its data object and render it in the dom</p>
 
     <p>Rendering this template:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p>{{type}}'s nickname is {{nickname}}!</p>"}}</code></pre>
+    <code-display type="handlebars">
+      {{if 1 "<p>{{type}}'s nickname is {{nickname}}!</p>"}}
+    </code-display>
 
     <p>In the context of this data object:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-var pkmn = new Rebound.Model({
-  type: 'Pikachu',
-  nickname: 'Sparky'
-});</code></pre>
+    <code-display type="javascript">
+      var pkmn = new Rebound.Model({
+        type: 'Pikachu',
+        nickname: 'Sparky'
+      });
+    </code-display>
 
     <p>Would result in the following HTML:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p>Pikachu's nickname is Sparky!</p>"}}</code></pre>
+
+    <code-display type="handlebars">
+      {{if 1 "<p>Pikachu's nickname is Sparky!</p>"}}
+    </code-display>
 
     <h2 id="templates-expressions">Expressions</h2>
-
     <p>To reach further into a data object, expressions can also be dot-separated paths.</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p>{{user.firstName}}</p>"}}</code></pre>
+    <code-display type="handlebars">
+      {{if 1 "<p>{{user.firstName}}</p>"}}
+    </code-display>
 
-    <p>Any valid <code>get</code> on a Rebound object can be represented as a HTMLBars expression:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-javascript">
-trainer.get('trainerCard.number')          ==> {{if 1 "{{trainerCard.number}}"}}
-trainer.get('pokemon[0].nickname') ==> {{if 1 "{{pokemon.0.nickname}}"}}
-trainer                                ==> {{if 1 "{{this}} or {{.}}"}}</code></pre>
+          <p>Any valid <code>get</code> on a Rebound object can be represented as a HTMLBars expression:</p>
+    <code-display type="javascript">
+      trainer.get('trainerCard.number')  ==> {{if 1 "{{trainerCard.number}}"}}
+      trainer.get('pokemon[0].nickname') ==> {{if 1 "{{pokemon.0.nickname}}"}}
+      trainer                            ==> {{if 1 "{{this}} or {{.}}"}}
+    </code-display>
 
     <p>Identifiers may be any unicode character except for the following:</p>
     <p>
@@ -70,22 +76,26 @@ trainer                                ==> {{if 1 "{{this}} or {{.}}"}}</code></
       <code>~</code>
     </p>
     <p>To reference a property that is not a valid identifier, you can use segment-literal notation, <code>[</code>:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p>{{pc.pokemon.box.1.[m|s~!ng n@.]}}</p>"}}</code></pre>
+    <code-display type="handlebars">
+      {{if 1 "<p>{{pc.pokemon.box.1.[m|s~!ng n@.]}}</p>"}}
+    </code-display>
 
     <p>Unlike Handlebars, HTMLBars lets you put expressions anywhere in your template file:</p>
     <h3>As Content</h3>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p>{{pokemon.0.nickname}}</p>"}}</code></pre>
+    <code-display type="handlebars">
+      {{if 1 "<p>{{pokemon.0.nickname}}</p>"}}
+    </code-display>
 
     <h3>In an Attribute</h3>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '<p style="color: {{pokemon.0.color}};">Pikachu</p>'}}</code></pre>
+    <code-display type="handlebars">
+      {{if 1 '<p style="color: {{pokemon.0.color}};">Pikachu</p>'}}
+    </code-display>
 
     <h3>On an Element</h3>
     <p style="font-size:13px;">(Element expressions are used to apply helpers on a specific element, dynamic attribute names are not supported at this time.)</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p {{on 'click' 'useThunder'}}>Pikachu</p>"}}</code></pre>
+    <code-display type="handlebars">
+      {{if 1 "<p {{on 'click' 'useThunder'}}>Pikachu</p>"}}
+    </code-display>
 
   </template>
   <script>return {}</script>

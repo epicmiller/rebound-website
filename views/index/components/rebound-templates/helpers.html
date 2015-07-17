@@ -6,10 +6,13 @@
       <p>Helpers add a light layer of functionality and logic to your templates, take any number of parameters or hash arguments, and come in two forms.</p>
       <p>Parameters and hash arguments can be <code>expressions</code>, <code>strings</code>, <code>numbers</code> or <code>boolean</code> values</p>
       <p><b>Inline</b> helpers are a single mustache :</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '<p>{{helperName param1 true hash1=foo.value hash2="bar" hash3=12}}</p>'}}</code></pre>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '<p>{{helperName}}</p>'}}</code></pre>
+      <code-display type="handlebars">
+        {{if 1 '<p>{{helperName param1 true hash1=foo.value hash2="bar" hash3=12}}</p>'}}
+      </code-display>
+
+      <code-display type="handlebars">
+        {{if 1 '<p>{{helperName}}</p>'}}
+      </code-display>
 
       <p><b>Block</b> helpers are identified by a <code>#</code> preceeding the
          helper name and require a matching closing mustache, <code>/</code>, of the same name.
@@ -22,22 +25,27 @@
          values and choose the paths adding the optional <code>as | value |</code>
          to the end of your block helper's opening mustache.</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '{{#helperName param1}}'}}
-{{if 1 '    <p>{{param1}}, {{blockParam1}}</p>'}}
-{{if 1 '{{/helperName}}'}}</code></pre>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '{{#helperName param1 param2 hash1=foo hash2="bar" as | blockParam1 blockParam2 |}}'}}
-{{if 1 '    <p>{{param1}}, {{blockParam1}}</p>'}}
-{{if 1 '{{else}}'}}
-{{if 1 '    <p>{{param2}}, {{blockParam2}}</p>'}}
-{{if 1 '{{/helperName}}'}}</code></pre>
+         <code-display type="handlebars">
+          {{if 1 '{{#helperName param1}}'}}
+          {{if 1 '    <p>{{param1}}, {{blockParam1}}</p>'}}
+          {{if 1 '{{/helperName}}'}}
+        </code-display>
+
+        <code-display type="handlebars">
+          {{if 1 '{{#helperName param1 param2 hash1=foo hash2="bar" as | blockParam1 blockParam2 |}}'}}
+          {{if 1 '    <p>{{param1}}, {{blockParam1}}</p>'}}
+          {{if 1 '{{else}}'}}
+          {{if 1 '    <p>{{param2}}, {{blockParam2}}</p>'}}
+          {{if 1 '{{/helperName}}'}}
+        </code-display>
 
       <p><b>Subexpressions</b> allow you to invoke multiple helpers within a
          single mustache, and pass in the results of inner helper invocations as
          arguments to outer helpers. Subexpressions are delimited by parentheses.</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "{{outer-helper (inner-helper 'abc') 'def'}}"}}</code></pre>
+
+        <code-display type="handlebars">
+          {{if 1 "{{outer-helper (inner-helper 'abc') 'def'}}"}}
+        </code-display>
 
 
       <h2 id="helpers">Built In Helpers</h2>
@@ -46,8 +54,9 @@
 
         <h3 id="helpers-length">length</h3>
         <p>The length helper will output the length of a collection. Simple as that</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "{{length trainer.pokemon}} // Renders '6'"}}</code></pre>
+        <code-display type="handlebars">
+          {{if 1 "{{length trainer.pokemon}} // Renders '6'"}}
+        </code-display>
 
         <h3 id="helpers-if">if</h3>
         <p>Sometimes you only want to render part of your template if a parameter is truthy</p>
@@ -55,19 +64,21 @@
            <code>false</code>, <code>undefined</code>, <code>null</code> or
            <code>[]</code> (i.e., any "falsy" value).</p>
         <p>If the expression evaluates to falsy, we can also display an alternate template using <code>&#123;&#123;else}}</code>:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '{{#if isPokemonMaster}}'}}
-{{if 1 "    You caught 'em all!"}}
-{{if 1 '{{else}}'}}
-{{if 1 "    Gotta catch 'em all!"}}
-{{if 1 '{{/if}}'}}</code></pre>
+        <code-display type="handlebars">
+          {{if 1 '{{#if isPokemonMaster}}'}}
+          {{if 1 "    You caught 'em all!"}}
+          {{if 1 '{{else}}'}}
+          {{if 1 "    Gotta catch 'em all!"}}
+          {{if 1 '{{/if}}'}}
+        </code-display>
 
         <p>If can also be written in an inline form for cases where you can't or don't want to use its block form</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p class={{if isPokemonMaster 'master' 'n00b'}}>"}}
-{{if 1 "    Adam Miller is a {{if isPokemonMaster 'master' 'n00b'}}!"}}
-{{if 1 "</p>"}}</code></pre>
+        <code-display type="handlebars">
+          {{if 1 "<p class={{if isPokemonMaster 'master' 'n00b'}}>"}}
+          {{if 1 "    Adam Miller is a {{if isPokemonMaster 'master' 'n00b'}}!"}}
+          {{if 1 "</p>"}}
+        </code-display>
 
         <h3 id="helpers-unless">unless</h3>
         <p>Unless is the opposite of our if helper.</p>
@@ -75,19 +86,21 @@
            <code>false</code>, <code>undefined</code>, <code>null</code> or
            <code>[]</code> (i.e., any "falsy" value).</p>
         <p>If the expression is truthy, we can also display an alternate template using <code>&#123;&#123;else}}</code>:</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '{{#unless isPokemonMaster}}'}}
-{{if 1 "    Gotta catch 'em all!"}}
-{{if 1 '{{else}}'}}
-{{if 1 "    You caught 'em all!"}}
-{{if 1 '{{/if}}'}}</code></pre>
+        <code-display type="handlebars">
+          {{if 1 '{{#unless isPokemonMaster}}'}}
+          {{if 1 "    Gotta catch 'em all!"}}
+          {{if 1 '{{else}}'}}
+          {{if 1 "    You caught 'em all!"}}
+          {{if 1 '{{/if}}'}}
+        </code-display>
 
         <p>Unless can also be written in an inline form for cases where you can't or don't want to use its block form</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p class={{unless isPokemonMaster 'n00b' 'master'}}>"}}
-{{if 1 "    Adam Miller is a {{unless isPokemonMaster 'n00b' 'master'}}!"}}
-{{if 1 "</p>"}}</code></pre>
+        <code-display type="handlebars">
+          {{if 1 "<p class={{unless isPokemonMaster 'n00b' 'master'}}>"}}
+          {{if 1 "    Adam Miller is a {{unless isPokemonMaster 'n00b' 'master'}}!"}}
+          {{if 1 "</p>"}}
+        </code-display>
 
         <h3 id="helpers-each">each</h3>
         <p>Rebound's each helper will render the template for every item in a collection.</p>
@@ -95,12 +108,13 @@
 
         <p>If the collection is empty, we can also display an alternate template using <code>&#123;&#123;else}}</code>:</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '{{#each pokemon as | pkmn index |}}'}}
-{{if 1 "    <p>{{index}}: {{pkmn.nickname}} is a {{pkmn.type}}</p>"}}
-{{if 1 '{{else}}'}}
-{{if 1 "    <p>Go wander around in the tall grass!</p>"}}
-{{if 1 '{{/each}}'}}</code></pre>
+        <code-display type="handlebars">
+          {{if 1 '{{#each pokemon as | pkmn index |}}'}}
+          {{if 1 "    <p>{{index}}: {{pkmn.nickname}} is a {{pkmn.type}}</p>"}}
+          {{if 1 '{{else}}'}}
+          {{if 1 "    <p>Go wander around in the tall grass!</p>"}}
+          {{if 1 '{{/each}}'}}
+        </code-display>
 
         <h3 id="helpers-on">on <code>&#123;&#123;on eventNames [delegateSelector] eventCallbacks hash1=value}}</code></h3>
         <p>Rebound's <b>on</b> helper binds event callbacks to the element it is placed on.
@@ -116,18 +130,19 @@
         <p>Values passed in through named parameters are made available on the <code>event.data</code> attribute of the event.
            This is helpful for passing block params to the event callback, which is always called in the scope of its component.</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 '<div class="pokemon-selector">'}}
-{{if 1 '  {{#each pokemon as | pkmn |}}'}}
-{{if 1 '    // This will call the `choose` method on the controler on click and touchend.'}}
-{{if 1 '    // By providing a delegate selector, only one event is bound for the whole list'}}
-{{if 1 '    // and by passing pokemon=pkmn, the event callback will have access to the'}}
-{{if 1 '    // clicked pokemon via event.data.pokemon'}}
-{{if 1 '    <a {{on "click touchend" ".pokemon-selector a" "choose" pokemon=pkmn}}>'}}
-{{if 1 '      {{pkmn.nickname}}, I Choose You!'}}
-{{if 1 '    </a>'}}
-{{if 1 '  {{/each}}'}}
-{{if 1 '</div>'}}</code></pre>
+           <code-display type="handlebars">
+            {{if 1 '<div class="pokemon-selector">'}}
+            {{if 1 '  {{#each pokemon as | pkmn |}}'}}
+            {{if 1 '    // This will call the `choose` method on the controler on click and touchend.'}}
+            {{if 1 '    // By providing a delegate selector, only one event is bound for the whole list'}}
+            {{if 1 '    // and by passing pokemon=pkmn, the event callback will have access to the'}}
+            {{if 1 '    // clicked pokemon via event.data.pokemon'}}
+            {{if 1 '    <a {{on "click touchend" ".pokemon-selector a" "choose" pokemon=pkmn}}>'}}
+            {{if 1 '      {{pkmn.nickname}}, I Choose You!'}}
+            {{if 1 '    </a>'}}
+            {{if 1 '  {{/each}}'}}
+            {{if 1 '</div>'}}
+          </code-display>
 
     <h2 id="dev-helpers">Developer Helpers</h2>
         <p>These helpers are here for your conveinence as a developer and will help you debug problems in your templaes.</p>
@@ -136,15 +151,18 @@
         <p>The log helper will console.log any parameters passed in. Parameters
            can be <code>expressions</code>, <code>strings</code>, <code>numbers</code>
           or <code>boolean</code> values</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "{{log trainer.firstName 'has' (length trainer.pokemon) 'of' 151 'pokemon:' trainer.pokemon}}" }}</code></pre>
+          <code-display type="handlebars">
+            {{if 1 "{{log trainer.firstName 'has' (length trainer.pokemon) 'of' 151 'pokemon:' trainer.pokemon}}" }}
+          </code-display>
 
         <h3 id="dev-helpers-debugger">debugger</h3>
         <p>The debugger helper will pause execution while rendering the template
            and allow you to inspect the current context and stack trace at the
            point it is inserted.</p>
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "{{debugger}}" }}</code></pre>
+
+        <code-display type="handlebars">
+          {{if 1 "{{debugger}}" }}
+        </code-display>
 
 
     <h2 id="writing-helpers">Writing Helpers</h2>
@@ -172,18 +190,19 @@
 
          <p>For example, this template:</p>
 
-<pre data-src="prism.js" class="line-numbers"><code class="language-handlebars">
-{{if 1 "<p>Trainer {{firstName}} {{lastName}} is" }}
-{{if 1 "   {{if master 'a Pokemon master!' 'not a Pokemon master...yet!'}}</p>" }}
+         <code-display type="handlebars">
+          {{if 1 "<p>Trainer {{firstName}} {{lastName}} is" }}
+          {{if 1 "   {{if master 'a Pokemon master!' 'not a Pokemon master...yet!'}}</p>" }}
 
-{{if 1 '<label for="firstName">First Name:</label>' }}
-{{if 1 '<input id="firstName" value="{{firstName}}">' }}
+          {{if 1 '<label for="firstName">First Name:</label>' }}
+          {{if 1 '<input id="firstName" value="{{firstName}}">' }}
 
-{{if 1 '<label for="lastName">Last Name:</label>' }}
-{{if 1 '<input id="lastName" value="{{lastName}}">' }}
+          {{if 1 '<label for="lastName">Last Name:</label>' }}
+          {{if 1 '<input id="lastName" value="{{lastName}}">' }}
 
-{{if 1 '<label for="isMaster">Is a Master:</label>' }}
-{{if 1 '<input type="checkbox" id="isMaster" checked="{{master}}">' }}</code></pre>
+          {{if 1 '<label for="isMaster">Is a Master:</label>' }}
+          {{if 1 '<input type="checkbox" id="isMaster" checked="{{master}}">' }}
+        </code-display>
 
       <p>Generates this demo to help you better understand data binding:</p>
 
