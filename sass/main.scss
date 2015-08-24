@@ -12,27 +12,53 @@ html {
 
   body{
     background-color: $off-white;
-    border-top: 3px solid #BC2222;
     position: absolute;
+    overflow-x: hidden;
     top:0;
     left: 0;
     right: 0;
     margin: 0;
     padding: 0;
-
     font-family: "Open Sans", sans-serif;
+
+    background-image: url(/assets/images/logos/medium.svg);
+    background-repeat: no-repeat;
+    background-size: 260px;
+    background-attachment: fixed;
+    background-position: calc(50% - 446px) 20px;
+
     .loading{
       display: block;
       text-align: center;
       padding-top: 60px;
     }
     a{
-      color: $red;
+      color: $blue;
       text-decoration: none;
       transition: border-color .1s;
       border-bottom: 1px solid transparent;
       &:hover{
-        border-color: $red;
+        border-color: $blue;
+      }
+    }
+
+    .icon-link{
+      border: none !important;
+      position: fixed;
+      top: 198px;
+      width: 30px;
+      text-align: center;
+      i{
+        color: $blue;
+      }
+      &.github{
+        left: calc(50% - 490px);
+      }
+      &.code{
+        left: calc(50% - 462px);
+      }
+      &.twitter{
+        left: calc(50% - 430px);
       }
     }
 
@@ -61,16 +87,31 @@ html {
     }
 
     nav#chrome{
-        text-align:center;
-        overflow: auto;
+      overflow: auto;
+      background-color: $blue;
+      background-image: url(/assets/images/logos/medium-inverse.svg);
+      background-repeat: no-repeat;
+      background-size: 260px;
+      background-attachment: fixed;
+      background-position: calc(50% - 446px) 20px;
+      height: 230px;
 
-      ul.nav-content{
+      .logo{
+        visibility: hidden;
+        height: 180px;
+        display: block;
+      }
+
+      .nav-content{
         @include flex-canvas();
-        list-style: none;
-        img{
-          width: 500px;
-          margin: 30px auto 20px;
+        position: absolute;
+        clip: rect(0, auto, auto, 0);
+        left: 50%;
+        margin-left: -600px;
+        @include breakpoint(mama-bear){
+          margin-left: -50%
         }
+        height: 230px;
         iframe{
           float: right;
         }
@@ -81,14 +122,19 @@ html {
           font-size: 18px;
       }
       .icon-link{
-        border: none !important;
+        z-index: 1;
+        i{
+          color: $white;
+        }
       }
     }
 
-    .main{
+   & > main{
       display: block;
       width: 1200px;
       margin: auto;
+      position: relative;
+      z-index: 999;
     }
   }
 }

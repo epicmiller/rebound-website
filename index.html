@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rebound Website</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="/apps/main.css">
+    <link type="text/css" rel="stylesheet" href="/vendor/fontawesome/css/font-awesome.min.css">
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Rebound Seed Project" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,minimal-ui">
+
+    <script type="application/javascript" src="/vendor/smooth-scroll/dist/js/smooth-scroll.js"></script>
+    <script type="application/javascript" src="/vendor/underscore/underscore-min.js"></script>
+    <script type="application/javascript" src="/vendor/reboundjs/rebound.runtime.min.js" id="Rebound" async>
+    {
+      "root": "/",
+      "globalComponents": {},
+      "jsPath": "/apps/:app/:app.js",
+      "cssPath": "/apps/:app/:app.css",
+      "triggerOnFirstLoad": true,
+      "routeMapping": {
+        ":route(/*actions)": "index"
+      }
+    }
+    </script>
+  </head>
+
+  <body>
+
+    <a href="https://github.com/reboundjs/rebound"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+    <nav id="chrome">
+      <div class="nav-content">
+        <img src="/assets/images/logos/medium.svg" class="logo">
+        <a href="https://github.com/reboundjs/rebound" target="_blank" class="icon-link github"><i class="fa fa-github nav-link"></i></a>
+        <a href="http://reboundjs.com/vendor/reboundjs/docs/rebound.html" target="_blank" class="icon-link code"><i class="fa fa-code nav-link"></i></a>
+        <a href="https://twitter.com/reboundjs" target="_blank" class="icon-link twitter"><i class="fa fa-twitter nav-link"></i></a>
+        <br>
+        <a href="https://twitter.com/reboundjs" class="twitter-follow-button" style="display: none;" data-show-count="false" data-show-screen-name="false">Follow @reboundjs</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.setAttribute('async', 'true');js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        <iframe src="https://ghbtns.com/github-btn.html?user=reboundjs&repo=rebound&type=star&count=true" frameborder="0" scrolling="0" width="60px" height="20px" async></iframe>
+      </div>
+    </nav>
+
+    <a href="https://github.com/reboundjs/rebound" target="_blank" class="icon-link github"><i class="fa fa-github nav-link"></i></a>
+    <a href="http://reboundjs.com/vendor/reboundjs/docs/rebound.html" target="_blank" class="icon-link code"><i class="fa fa-code nav-link"></i></a>
+    <a href="https://twitter.com/reboundjs" target="_blank" class="icon-link twitter"><i class="fa fa-twitter nav-link"></i></a>
+
+    <main>
+      <span class="loading">Loading...</span>
+    </main>
+
+    <footer>
+      <div class="footer-wrapper"></div>
+    </footer>
+    <script src="/assets/javascripts/prism.js" type="text/javascript"></script>
+  </body>
+</html>
