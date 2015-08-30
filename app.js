@@ -95,9 +95,9 @@
 
 // csrf error handler
   app.use(function (err, req, res, next) {
-    if (err.code !== 'EBADCSRFTOKEN'){ return next(err); }
-    res.status(403);
-    res.json({status: 'error', message: 'Session has expired or form tampered with'});
+    // if (err.code !== 'EBADCSRFTOKEN'){ return next(err); }
+    // res.status(403);
+    // res.json({status: 'error', message: 'Session has expired or form tampered with'});
   });
 
 // Set our csrf cookie for the session on first load
