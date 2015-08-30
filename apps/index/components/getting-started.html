@@ -7,11 +7,11 @@
     <code-display type="markup">
       &lt;script src="/javascripts/lib/rebound.runtime.js" id="Rebound"&gt;
       {
+        "container": "#app-container" // Defaults to the first &lt;main&gt; tag
         "root": "/",
         "services": {"chrome" : "nav"},
         "jsPath": "/javascripts/apps/:route/:app.js",
         "cssPath": "/stylesheets/apps/:app.css",
-        "triggerOnFirstLoad": true,
         "routeMapping": {
           "": "home"
         }
@@ -21,7 +21,7 @@
 
     <p>Because the Rebound script tag contains a src, nothing inside it gets executed, but is still accessable to the page as $('#Rebound').html().
        We take advantage of this to load Rebound's router config options right where you include the Rebound library itself. Convenient!
-       Our <a href="/routing">routing section</a> covers exactly what these config options do.</p>
+       Our <a href="/routing/overview">routing section</a> covers exactly what these config options do.</p>
 
     <p><b>If no config is passed to Rebound inside of its script tag then Rebound's router will not start.
           This leaves you with a standalone data bound component library to integrate with as you see fit.</b></p>

@@ -166,12 +166,22 @@ rebound-home{
       top: 0;
     }
 
+    blockquote{
+      padding: 0 15px;
+      color: #777;
+      border-left: 4px solid #ddd;
+      float: left;
+    }
+
     h1{
       display: block;
       text-align: center;
       margin-top: 60px;
       border-bottom: 3px solid rgba(0,0,0,.1);
       padding-bottom: 30px;
+      display: inline-block;
+      width: 100%;
+      @include clearfix();
     }
     h2{
       background: $white;
@@ -191,6 +201,7 @@ rebound-home{
 
     }
     h3{
+      padding-left: 12px;
       &:before {
         content: '';
         display: inline;
@@ -199,14 +210,17 @@ rebound-home{
         height: 2px;
         background: black;
         border-radius: 7px;
-        margin: 13px 5px 0 0;
+        margin: 13px 5px 0 -12px;
       }
       code{
         font-weight: normal;
         margin-left: 15px;
       }
     }
-    p{
+    ul li{
+      padding-bottom: 12px;
+    }
+    p, ul{
       margin-left: 11px;
       code{
         padding: 2px 3px;

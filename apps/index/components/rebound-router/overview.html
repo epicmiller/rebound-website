@@ -1,0 +1,129 @@
+<element name="rebound-router-overview">
+  <template>
+
+      <h3>Rebound adds a three bits of functionality to Backbone's router to make navigation in a single page app even easier:</h3>
+      <ul>
+        <li>Relative urls will always try and trigger a route. You can now write <code>&lt;a href="/profile/1234"&gt;&lt;/a&gt;</code> and have that route be triggered on the router. No need for wiring click events, or using helpers to trigger routes.</li>
+        <li>Absolute urls like <code>&lt;a href="www.google.com"&gt;&lt;/a&gt;</code> will be ignored by the router and load normally.</li>
+        <li>If a route does not exist in the router, Rebound will try and automatically
+            load that page's resources from a javascript file at <code>baseRoute + jsPath</code>
+            and a css file at <code>baseRoute + cssPath</code>, and then re-trigger the route.</li>
+      </ul>
+
+      <h3>This has two major benefits</h3>
+      <ul>
+        <li>By loading routes and page resources as they are needed, <b>your initial page load size is greatly reduced</b>.</li>
+        <li>Your application also <b>does not need to know every route on page load</b></li>
+      </ul>
+
+
+      <p><b>Every page in your application manages its own routing</b> using the
+            syntax shown in the <a href="/components/routable-components">routable
+            components</a> section. This way there is no central router to manage –
+            a major benefit for larger applications.</p>
+
+      <p>Links whos href attribute match the page you are on are automatically
+         given an <code>active</code> class for your styling convenience.</p>
+
+      <p>If you need to access the router directly, the router instance can be
+         found as a property of every component as <code>this.router</code>, or
+         globally at <code>Rebound.router</code>. See <a href="http://backbonejs.org/#Router">Backbone's documentation</a>
+         for methods available on the router.</p>
+
+      <h2 id="routing-config-options">Wait a second. You promised me config options.</h2>
+
+      <h3>If the router isn't your thing – don't pass a config</h3>
+      <p>If no config is passed to rebound inside of its script tag then Rebound's
+      router will not start, leaving you with a data bound component library to integrate with as you see fit.</p>
+
+      <h3>Config Options</h3>
+
+      <ul>
+        <li>
+          <b>root</b> - <code>/</code> - This is the equivelent to passing the
+          root option to <code>Backbone.history.start</code>. If your application is not being
+          served from the root url <code>/</code> of your domain, be sure to tell History where
+          the root really is.
+        </li>
+        <li>
+          <b>services</b> - <code>{}</code> - The components specified here are
+          for page elements or data services you want to live the entire length
+          of the user's session, like a global nav bar, logged in user object, site-wide chat,
+          etc. These are accessable at <code>Rebound.services.&lt;service-name&gt;</code>
+          <br><br>
+          As we will talk about in the <a hrev="/services/overview">services section</a>,
+          by default there is only one long-lived component on the services object
+          - your currently loaded page, accessable at <code>Rebound.services.page</code>.
+          <br><br>
+          You may load additional services by specifying <code>{ "service-name": "css-selector" }</code>.
+          The component will be appended to the first matching element for the provided css selector.
+          It is loaded using <code>jsPrefix</code> and <code>cssPrefix</code> and
+          <code>service-name</code> ass the app name.
+        </li>
+        <li>
+          <b>jsPrefix</b> - Used by Rebound to construct the path to each page's js file.
+          Use <code>:app</code> as a placeholder for the top level route's name Ex: the url
+          <code>/profile/1/activity</code> has an <code>:app</code> value of <code>profile</code>. If a different
+          app name is specified in your routeMappings, it will be used instead.
+        </li>
+        <li>
+          <b>cssPrefix</b> - Used by Rebound to construct the path to each page's css file.
+          Use <code>:app</code> as a placeholder for the top level route's name. Ex:
+          <code>/profile/1/activity</code> has an <code>:app</code> value of <code>profile</code>. If a different
+          app name is specified in your routeMappings, it will be used instead.
+        </li>
+        <li>
+          <b>routeMapping</b> - <code>{'': 'index'}</code> - Object which defines
+          custom mappings between <code>:app</code> paths and route selectors.
+          Ex: If you want <code>/profile</code> to route to the default <code>profile</code> app,
+          but <code>/profile/edit</code> to route to a different <code>profile-edit</code>
+          app, then pass <code>{ "profile/edit": "profile-edit" }</code>. The key
+          values of this hash can be any valid <a href="http://backbonejs.org/#Router-routes">Backbone route regex</a>.
+        </li>
+        <li>
+          <b>errorRoute</b> - <code>error</code> - The <code>:app</code> name for your custom error page. Defaults to "error".
+        </li>
+      </ul>
+
+      <h2 id="routing-example">Example time!</h2>
+      <p>Consider the following:</p>
+      <blockquote>
+        <p>A page is loaded at <code>/profile/1234</code>, with the jsPath
+           <code>javascripts/apps/:app.js</code>, the cssPath <code>stylesheets/apps/:app.js</code>
+           and baseRoute <code>/</code>. Rebound will start the router and try
+           to trigger the route <code>/profile/1234</code>.
+           Because this route doesn't exits, the default catch-all route is executed.</p>
+        <p>The catch-all route tries to load the javascript file <code>/javascripts/apps/profile.js</code>,
+           and the css file <code>/stylesheets/apps/:app.js</code> – which contans
+           all of the profile page's code, including its template, component properties, <i>and additional routes</i>
+           (as you'll see below in the components section).</p>
+        <p>The routes defined in this page component are then loaded into the router,
+           and the <code>/profile/1234</code> route is triggered again. This time, because the
+           page's resources have been loaded, the <code>/profile/:uid</code> route has now
+           presumably been defined in the router and the route will execute.</p>
+
+        <p>When the user clicks on another link, say, <code>/discover</code>, the
+           router sees that it does not have a <code>/discover</code> route loaded.
+           The router again hits the wildcard route and fetches <code>/javascripts/apps/discover.js</code>.
+           The profile page is then uninstalled, its routes removed, and the discover page is loaded in its place.</p>
+      </blockquote>
+
+      <h2 id="routing-errors">But what if that route doesn't exist?!</h2>
+        <p>Don't you worry! If you hapen to navigate to a route that doesn't have
+           any resources associated with it on the server, we will attempt to load
+           an error page from your server using the same <code>jsPath</code>
+           and <code>cssPath</code> used to load your page components.</p>
+
+        <p>If for some ungodly reason you don't have a custom error page, we will
+           load a default error page so your users aren't left guessing what happened.</p>
+
+        <p>We use the <code>errorRoute</code> config option as the <code>:app</code>
+           name, which defaults to <code>error</code>, to try and load the
+           error page. This is configurable in your
+           <a href="/routing/config-options">config options</a>.</p>
+
+
+
+  </template>
+  <script>return {}</script>
+</element>

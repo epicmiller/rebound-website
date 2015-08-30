@@ -2,17 +2,15 @@
   <template>
 
     <link rel="import" href="apps/index/components/code-display.html">
-
+    <link rel="import" href="apps/index/components/rebound-nav.html">
     <link rel="import" href="apps/index/components/overview.html">
     <link rel="import" href="apps/index/components/getting-started.html">
-
+    <link rel="import" href="apps/index/components/rebound-router/overview.html">
     <link rel="import" href="apps/index/components/rebound-components/structure.html">
-
     <link rel="import" href="apps/index/components/rebound-data/events.html">
     <link rel="import" href="apps/index/components/rebound-data/models.html">
     <link rel="import" href="apps/index/components/rebound-data/collections.html">
     <link rel="import" href="apps/index/components/rebound-data/computed-properties.html">
-
     <link rel="import" href="apps/index/components/rebound-templates/basic.html">
     <link rel="import" href="apps/index/components/rebound-templates/helpers.html">
 
@@ -24,63 +22,17 @@
       </div>
     </section>
 
-    <nav rebound-home class="subnav fixed" {{on 'click' 'a' 'highlight'}}>
-      <h2 style="position:absolute;opacity:0;top:0;left:0;width:0;height:0;padding:0;">ReboundJS</h2>
-        <a href="/" class="nav-item selected">Overview</a>
-        <a href="/start" class="nav-item">Getting Started</a>
-
-      <h2>Components</h2>
-        <a href="/components/overview" class="nav-item">Overview</a>
-        <a href="/components/structure" class="nav-item">Structure</a>
-
-      <h2>Data</h2>
-        <a href="/data/overview" class="nav-item">Overview</a>
-        <a href="/data/events" class="nav-item">Events</a>
-        <a href="/data/model" class="nav-item">Models</a>
-          <a href="/data/model/constructor" class="subnav-item">Constructor / Initialize</a>
-          <a href="/data/model/get" class="subnav-item">get</a>
-          <a href="/data/model/set" class="subnav-item">set</a>
-          <a href="/data/model/toggle" class="subnav-item">toggle</a>
-          <a href="/data/model/tojson" class="subnav-item">toJSON</a>
-          <a href="/data/model/reset" class="subnav-item">reset</a>
-        <a href="/data/collection" class="nav-item">Collections</a>
-          <a href="/data/collection/constructor" class="subnav-item">Constructor / Initialize</a>
-          <a href="/data/collection/get" class="subnav-item">get</a>
-          <a href="/data/collection/set" class="subnav-item">set</a>
-          <a href="/data/collection/reset" class="subnav-item">reset</a>
-          <a href="/data/collection/tojson" class="subnav-item">toJSON</a>
-        <a href="/data/computedproperty" class="nav-item">Computed Properties</a>
-          <a href="/data/computedproperty/basics" class="subnav-item">Basic Use</a>
-          <a href="/data/computedproperty/chaining" class="subnav-item">Chaining Computed Properties</a>
-          <a href="/data/computedproperty/updating" class="subnav-item">Dynamic Updating</a>
-          <a href="/data/computedproperty/complex-objects" class="subnav-item">Returning Complex Objects</a>
-
-      <h2>Templates</h2>
-        <a href="/templates/overview" class="nav-item">Overview</a>
-        <a href="/templates/basics" class="nav-item">Basic Use</a>
-        <a href="/templates/expressions" class="nav-item">Expressions</a>
-        <a href="/templates/helpers" class="nav-item">Helpers</a>
-        <a href="/helpers" class="nav-item">Built In Helpers</a>
-          <a href="/helpers/length" class="subnav-item">length</a>
-          <a href="/helpers/if" class="subnav-item">if</a>
-          <a href="/helpers/unless" class="subnav-item">unless</a>
-          <a href="/helpers/each" class="subnav-item">each</a>
-          <a href="/helpers/on" class="subnav-item">on</a>
-        <a href="/dev-helpers" class="nav-item">Developer Helpers</a>
-          <a href="/dev-helpers/log" class="subnav-item">log</a>
-          <a href="/dev-helpers/debugger" class="subnav-item">debugger</a>
-        <a href="/writing-helpers" class="nav-item">Writing Your Own Helpers</a>
-        <a href="/templates/databinding" class="nav-item">Automatic Data Binding</a>
-
-      <h2>Routing</h2>
-        <a href="/routing" class="nav-item">Routable Components</a>
-
-    </nav>
+    <rebound-nav></rebound-nav>
 
     <main>
 
       <rebound-home-overview></rebound-home-overview>
       <rebound-getting-started></rebound-getting-started>
+
+
+      <h1 id="routing-overview">Rebound Router</h1>
+      <rebound-router-overview></rebound-router-overview>
+
 
       <h1 id="components-overview">Rebound Components</h1>
       <p>Rebound is a Model-View-Component library. This means the basic building
@@ -89,7 +41,9 @@
       <p>Custom Elements are a powerful tool which allows you to define custom
          HTML tags that encapsulate functionality.</p>
 
-      <rebound-components-structure></rebound-components-structure>
+      <p style="text-align: center;font-size: 30px;color: #ccc;">Coming Soon</p>
+
+      {{!-- <rebound-components-structure></rebound-components-structure> --}}
 
       <h1 id="data-overview">Rebound Data</h1>
       <p>Rebound extends Backbone's powerful data objects to allow for <b>deep nesting</b> and adds <b>Computed Properties</b> into the mix, offering you a whole new level of power and flexibility.</p>
@@ -166,35 +120,37 @@
               scrollPosition = window.scrollY;
               var smallest = -999999999;
               headers.forEach(function(el){
-                var top = el.getBoundingClientRect().top
+                var top = el.getBoundingClientRect().top - 30;
                 if(top <= 0 && top > smallest){
                   smallest = top;
                   active = el;
                 }
               });
-              console.log(active.id.replace('-', '/'));
-              // Rebound.router.navigate(active.id.replace(/-/g, '/'));
+              if(active.id && that.get('updateURL')){
+                Rebound.router.navigate(active.id.replace(/-/g, '/'), {trigger: false});
+              }
             };
-
         scrollCallback();
-        // Prism.highlightAll();
-
       },
 
     /*********** Controller Default Properties **************/
 
       scrollPosition: 0,
-      get menuOffset(){
-        var pos = this.get('scrollPosition');
-        return (pos >=233) ? 0 : 233 - pos;
-      },
+      urlUpdate: true,
       versions: new versions([{name: '--.--.--'}]),
 
 
     /************** Controller Functions *****************/
 
       route: function(path, args){
-        smoothScroll.animateScroll( null, '#'+(Backbone.history.fragment.replace(/\//g, '-') || 'chrome'), {updateURL: false});
+        var that = this;
+        this.set('updateURL', false);
+        smoothScroll.animateScroll( null, '#'+(Backbone.history.fragment.replace(/\//g, '-') || 'chrome'), {
+          updateURL: false,
+          offset: 25,
+          callback: function(){
+            that.set('updateURL', true);
+          }});
 
         var old = document.querySelectorAll('a.nav-item.active')[0];
         old && old.classList.remove('active');

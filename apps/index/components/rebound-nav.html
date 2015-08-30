@@ -1,0 +1,59 @@
+<element name="rebound-nav">
+  <template>
+    <nav rebound-home class="subnav fixed" {{on 'click' 'a' 'highlight'}}>
+      <h2 style="position:absolute;opacity:0;top:0;left:0;width:0;height:0;padding:0;">ReboundJS</h2>
+        <a href="/" class="nav-item selected">Overview</a>
+        <a href="/start" class="nav-item">Getting Started</a>
+
+      <h2>Routing</h2>
+        <a href="/routing/overview" class="nav-item">Overview</a>
+        <a href="/routing/config-options" class="nav-item">Config Options</a>
+        <a href="/routing/example" class="nav-item">Example Route</a>
+        <a href="/routing/errors" class="nav-item">Load Errors</a>
+
+      <h2>Components</h2>
+        <a href="/components/overview" class="nav-item">Overview</a>
+        <a href="/components/structure" class="nav-item">Structure</a>
+
+      <h2>Data</h2>
+        <a href="/data/overview" class="nav-item">Overview</a>
+        <a href="/data/events" class="nav-item">Events</a>
+        <a href="/data/model" class="nav-item">Models</a>
+          <a href="/data/model/constructor" class="subnav-item">Constructor / Initialize</a>
+          <a href="/data/model/get" class="subnav-item">get</a>
+          <a href="/data/model/set" class="subnav-item">set</a>
+          <a href="/data/model/toggle" class="subnav-item">toggle</a>
+          <a href="/data/model/tojson" class="subnav-item">toJSON</a>
+          <a href="/data/model/reset" class="subnav-item">reset</a>
+        <a href="/data/collection" class="nav-item">Collections</a>
+          <a href="/data/collection/constructor" class="subnav-item">Constructor / Initialize</a>
+          <a href="/data/collection/get" class="subnav-item">get</a>
+          <a href="/data/collection/set" class="subnav-item">set</a>
+          <a href="/data/collection/reset" class="subnav-item">reset</a>
+          <a href="/data/collection/tojson" class="subnav-item">toJSON</a>
+        <a href="/data/computedproperty" class="nav-item">Computed Properties</a>
+          <a href="/data/computedproperty/basics" class="subnav-item">Basic Use</a>
+          <a href="/data/computedproperty/chaining" class="subnav-item">Chaining Computed Properties</a>
+          <a href="/data/computedproperty/updating" class="subnav-item">Dynamic Updating</a>
+          <a href="/data/computedproperty/complex-objects" class="subnav-item">Returning Complex Objects</a>
+
+      <h2>Templates</h2>
+        <a href="/templates/overview" class="nav-item">Overview</a>
+        <a href="/templates/basics" class="nav-item">Basic Use</a>
+        <a href="/templates/expressions" class="nav-item">Expressions</a>
+        <a href="/templates/helpers" class="nav-item">Helpers</a>
+        <a href="/helpers" class="nav-item">Built In Helpers</a>
+          <a href="/helpers/length" class="subnav-item">length</a>
+          <a href="/helpers/if" class="subnav-item">if</a>
+          <a href="/helpers/unless" class="subnav-item">unless</a>
+          <a href="/helpers/each" class="subnav-item">each</a>
+          <a href="/helpers/on" class="subnav-item">on</a>
+        <a href="/dev-helpers" class="nav-item">Developer Helpers</a>
+          <a href="/dev-helpers/log" class="subnav-item">log</a>
+          <a href="/dev-helpers/debugger" class="subnav-item">debugger</a>
+        <a href="/writing-helpers" class="nav-item">Writing Your Own Helpers</a>
+        <a href="/templates/databinding" class="nav-item">Automatic Data Binding</a>
+
+    </nav>
+  </template>
+</element>
