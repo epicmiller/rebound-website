@@ -30,11 +30,11 @@
       <rebound-getting-started></rebound-getting-started>
 
 
-      <h1 id="routing-overview">Rebound Router</h1>
+      <h1 id="routing">Rebound Router</h1>
       <rebound-router-overview></rebound-router-overview>
 
 
-      <h1 id="components-overview">Rebound Components</h1>
+      <h1 id="components">Rebound Components</h1>
       <p>Rebound is a Model-View-Component library. This means the basic building
         blocks of Rebound are data bound components which leverage the W3 Custom
         Elements spec.</p>
@@ -45,7 +45,7 @@
 
       {{!-- <rebound-components-structure></rebound-components-structure> --}}
 
-      <h1 id="data-overview">Rebound Data</h1>
+      <h1 id="data">Rebound Data</h1>
       <p>Rebound extends Backbone's powerful data objects to allow for <b>deep nesting</b> and adds <b>Computed Properties</b> into the mix, offering you a whole new level of power and flexibility.</p>
       <p>These model's inherit all of Backbone's convenience functions and you can <a href="http://backbonejs.org/" target="_blank">refer to Backbone's documentation</a> for referance. Below we describe features unique to Rebound.</p>
       <p><b>In most scenarios you will use Rebound Data objects in the context of <a href="/components">Components</a> and will not have to create them directly</b></p>
@@ -55,7 +55,7 @@
       <rebound-data-collections></rebound-data-collections>
       <rebound-data-computed-properties></rebound-data-computed-properties>
 
-      <h1 id="templates-overview">Rebound Templates</h1>
+      <h1 id="templates">Rebound Templates</h1>
       <p>Rebound uses <a href="https://github.com/tildeio/htmlbars">HTMLBars</a>, a brilliant templating system for the web built on top of Handlebars, to drive your app's user interface.</p>
       <p>You can write HTMLBars templates just like you write HTML, but they allow you to embed expressions into your markup that update automatically with your data.</p>
 
@@ -110,24 +110,28 @@
         headers = headers.concat(h1);
         headers = headers.concat(h2);
         headers = headers.concat(h3);
-        var scrollPosition = 0;
+        var scrollPosition = 0, path;
         var that = this;
         var active = headers[0];
             scrollCallback = function(){
               window.requestAnimationFrame(scrollCallback);
-              that.set('scrollPosition', window.scrollY);
               if(scrollPosition === window.scrollY) return;
               scrollPosition = window.scrollY;
-              var smallest = -999999999;
-              headers.forEach(function(el){
-                var top = el.getBoundingClientRect().top - 30;
-                if(top <= 0 && top > smallest){
-                  smallest = top;
-                  active = el;
-                }
-              });
-              if(active.id && that.get('updateURL')){
-                Rebound.router.navigate(active.id.replace(/-/g, '/'), {trigger: false});
+              if(scrollPosition < 260) path = '/';
+              else{
+                var smallest = -999999999;
+                headers.forEach(function(el){
+                  var top = el.getBoundingClientRect().top - 30;
+                  if(top <= 0 && top > smallest){
+                    smallest = top;
+                    active = el;
+                  }
+                });
+                path = active.id;
+              }
+              if(path && that.get('updateURL')){
+                Rebound.router.navigate(path, {trigger: false})
+                .then(that.highlight);
               }
             };
         scrollCallback();
@@ -144,29 +148,25 @@
 
       route: function(path, args){
         var that = this;
+        this.highlight();
         this.set('updateURL', false);
-        smoothScroll.animateScroll( null, '#'+(Backbone.history.fragment.replace(/\//g, '-') || 'chrome'), {
+        smoothScroll.animateScroll( null, '#'+(Backbone.history.fragment || 'chrome'), {
           updateURL: false,
-          offset: 25,
+          offset: 15,
           callback: function(){
             that.set('updateURL', true);
           }});
 
-        var old = document.querySelectorAll('a.nav-item.active')[0];
-        old && old.classList.remove('active');
+      },
 
+      highlight: function(){
         var el = document.querySelectorAll('.subnav a[href="/' + Backbone.history.fragment + '"]')[0];
         if(!el) return;
         do{
           if(el.classList.contains('nav-item')){
-            el.classList.add('active');
-            return;
+            return el.classList.add('active');
           }
         }while(el = el.previousElementSibling)
-      },
-
-      highlight: function(event){
-
       }
 
     })

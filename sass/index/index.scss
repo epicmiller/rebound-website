@@ -18,6 +18,15 @@
       text-align: center;
       background-color: $white;
       color: $blue;
+      transition: opacity .15s;
+      &:hover, &:focus{
+        box-shadow: none;
+        opacity: .9;
+        border-color: $white;
+      }
+      &:active{
+        opacity: .55;
+      }
     }
     .donwload-or{
       display: block;

@@ -1,7 +1,7 @@
 <element name="rebound-templates-helpers">
   <template>
 
-    <h2 id="templates-helpers">Helpers</h2>
+    <h2 id="templates/helpers">Helpers</h2>
 
       <p>Helpers add a light layer of functionality and logic to your templates, take any number of parameters or hash arguments, and come in two forms.</p>
       <p>Parameters and hash arguments can be <code>expressions</code>, <code>strings</code>, <code>numbers</code> or <code>boolean</code> values</p>
@@ -52,13 +52,13 @@
         <p>Rebound ships with a number of convenient helpers built in. These can
            be used in any template you write to help render your HTML</p>
 
-        <h3 id="helpers-length">length</h3>
+        <h3 id="helpers/length">length</h3>
         <p>The length helper will output the length of a collection. Simple as that</p>
         <code-display type="handlebars">
           {{if 1 "{{length trainer.pokemon}} // Renders '6'"}}
         </code-display>
 
-        <h3 id="helpers-if">if</h3>
+        <h3 id="helpers/if">if</h3>
         <p>Sometimes you only want to render part of your template if a parameter is truthy</p>
         <p>Rebound will not render the block if the argument passed evaluates to
            <code>false</code>, <code>undefined</code>, <code>null</code> or
@@ -80,7 +80,7 @@
           {{if 1 "</p>"}}
         </code-display>
 
-        <h3 id="helpers-unless">unless</h3>
+        <h3 id="helpers/unless">unless</h3>
         <p>Unless is the opposite of our if helper.</p>
         <p>Rebound will only render the block if the argument passed evaluates to
            <code>false</code>, <code>undefined</code>, <code>null</code> or
@@ -102,7 +102,7 @@
           {{if 1 "</p>"}}
         </code-display>
 
-        <h3 id="helpers-each">each</h3>
+        <h3 id="helpers/each">each</h3>
         <p>Rebound's each helper will render the template for every item in a collection.</p>
         <p>The first block param is the item in the collection currently being render, the second block param is that element's index.</p>
 
@@ -116,7 +116,7 @@
           {{if 1 '{{/each}}'}}
         </code-display>
 
-        <h3 id="helpers-on">on <code>&#123;&#123;on eventNames [delegateSelector] eventCallbacks hash1=value}}</code></h3>
+        <h3 id="helpers/on">on <code>&#123;&#123;on eventNames [delegateSelector] eventCallbacks hash1=value}}</code></h3>
         <p>Rebound's <b>on</b> helper binds event callbacks to the element it is placed on.
            It is similar to using <code>$.on()</code> to bind events programatically.
            As parts of your dom is re-rendered and removed, Rebound will automatically
@@ -147,7 +147,7 @@
     <h2 id="dev-helpers">Developer Helpers</h2>
         <p>These helpers are here for your conveinence as a developer and will help you debug problems in your templaes.</p>
 
-        <h3 id="dev-helpers-log">log</h3>
+        <h3 id="dev-helpers/log">log</h3>
         <p>The log helper will console.log any parameters passed in. Parameters
            can be <code>expressions</code>, <code>strings</code>, <code>numbers</code>
           or <code>boolean</code> values</p>
@@ -155,7 +155,7 @@
             {{if 1 "{{log trainer.firstName 'has' (length trainer.pokemon) 'of' 151 'pokemon:' trainer.pokemon}}" }}
           </code-display>
 
-        <h3 id="dev-helpers-debugger">debugger</h3>
+        <h3 id="dev-helpers/debugger">debugger</h3>
         <p>The debugger helper will pause execution while rendering the template
            and allow you to inspect the current context and stack trace at the
            point it is inserted.</p>
@@ -173,7 +173,7 @@
 
 
 
-    <h2 id="templates-databinding">Automatic Data Binding</h2>
+    <h2 id="templates/databinding">Automatic Data Binding</h2>
       <p>Automatic data binding is one of the largest benefits of Rebound templates.
          Data binding means that as the underlying data and computed properties used to render your template change,
          your DOM will update itself automatically to reflect your application's new state.</p>

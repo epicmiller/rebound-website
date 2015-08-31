@@ -1,12 +1,12 @@
 <element name="rebound-data-models">
   <template>
 
-    <h2 id="data-model">Models</h2>
+    <h2 id="data/model">Models</h2>
     <p><b>Rebound Models</b> are the most basic data object in the framework — frequently representing a row in a table in a database on your server.
        The inherit from <a href="http://backbonejs.org/#Model">Backbone Models</a> and have all of the same useful methods you are used to for performing computations and transformations on that data.
        Rebound augments Backbone Models by enabling <b>deep data nesting</b>. You can now have both <b>Rebound Collections</b> and <b>Rebound Computed Properties</b> as properties of a Model.</p>
 
-    <h3 id="data-model-constructor">constructor / initialize <code>new Rebound.Model([attributes], [options])</code></h3>
+    <h3 id="data/model/constructor">constructor / initialize <code>new Rebound.Model([attributes], [options])</code></h3>
     <p>When creating an instance of a model, you can pass in the initial values of the attributes, which will be set on the model.
        Rebound.Model's constructor now accepts any valid JSON structure where arrays only contain hashes.</p>
     <p>These values are promoted to their respective Rebound data structures. Arrays become Collections, Hashes become Models and Functions are promoted to Computed Properties.</p>
@@ -29,7 +29,7 @@
       });
     </code-display>
 
-    <h3 id="data-model-get">get <code>model.get(path)</code></h3>
+    <h3 id="data/model/get">get <code>model.get(path)</code></h3>
     <p>Backbone's <b>Model.get</b> method has been extended to allow for deep retreival of data using JSON or Handlebars syntax. Multiple may be strung together for the same effect.</p>
     <p>Using the model we have created above:</p>
 
@@ -44,7 +44,7 @@
       model.get('obj').get('prop') // Returns 'foo'
     </code-display>
 
-    <h3 id="data-model-set">set <code>model.set(attributes, [options])</code></h3>
+    <h3 id="data/model/set">set <code>model.set(attributes, [options])</code></h3>
     <p>Similarly, <b>Model.set</b> has been extended to allow for deep setting
        of data using JSON or Handlebars syntax. Like Model constructors, you
        can pass set a JSON object and Rebound will do a deep merge of the data
@@ -81,7 +81,7 @@
       );
     </code-display>
 
-    <h3 id="data-model-toggle">toggle <code>model.get(path, [options])</code></h3>
+    <h3 id="data/model/toggle">toggle <code>model.get(path, [options])</code></h3>
     <p>A new convenience method, <b>Model.toggle</b>, will toggle the value of boolean properties. A <code>change</code> event will be fired.</p>
     <p>Using the model we have created above:</p>
 
@@ -91,7 +91,7 @@
     </code-display>
 
 
-    <h3 id="data-model-tojson">toJSON <code>model.toJSON()</code></h3>
+    <h3 id="data/model/tojson">toJSON <code>model.toJSON()</code></h3>
     <p><b>Model.toJSON</b> has been extended to return a deep, cyclic dependancy safe, copy of the model. <a href="/computedProperties">Computed Properties</a> are evaluated.</p>
     <p>Using the model we have created above:</p>
 
@@ -114,7 +114,7 @@
     </code-display>
 
 
-    <h3 id="data-model-reset">reset <code>model.reset([attributes], [options])</code></h3>
+    <h3 id="data/model/reset">reset <code>model.reset([attributes], [options])</code></h3>
     <p>Models now have a, <b>Model.reset</b> property. Calling reset on a model
        will set its primitive properties back to their defaults, call reset on
        all complex objects it contains, unset any values without defaults, and

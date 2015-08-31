@@ -1,7 +1,7 @@
 <element name="rebound-data-computed-properties">
   <template>
 
-    <h2 id="data-computedproperty">Computed Properties</h2>
+    <h2 id="data/computed">Computed Properties</h2>
 
     <p>Computed Properties use es5 getter and setter syntax to let you declare
        functions as properties on your Models. Rebound will automatically
@@ -12,7 +12,7 @@
        are modified, triggering the appropreate <code>change</code>,
        <code>add</code> and <code>remove</code> events.</p>
 
-    <h3 id="data-computedproperty-basics">Basic Use</h3>
+    <h3 id="data/computed/basics">Basic Use</h3>
 
     <p>It's super handy for taking one or more normal properties and transforming
       or manipulating their data to create a new value.</p>
@@ -39,7 +39,7 @@
     </code-display>
 
 
-    <h3 id="data-computedproperty-chaining">Chaining Computed Properties</h3>
+    <h3 id="data/computed/chaining">Chaining Computed Properties</h3>
     <p>Computed Properties can also depend on other computed properties</p>
 
     <code-display type="javascript">
@@ -70,7 +70,7 @@
       captainAmerica.get('description'); // "Steve Rogers; Age: 80; Country: USA"
     </code-display>
 
-    <h3 id="data-computedproperty-updating">Dynamic Updating</h3>
+    <h3 id="data/computed/updating">Dynamic Updating</h3>
 
     <p>Computed properties, by default, observe any changes made to the
        properties they depend on and are dynamically updated when they're called.
@@ -90,7 +90,7 @@
        computed properties that depend on them, all the way down the chain of
        computed properties you've created.</p>
 
-    <h3 id="data-computedproperty-complex-objects">Returning Complex Objects</h3>
+    <h3 id="data/computed/complex-objects">Returning Complex Objects</h3>
     <p>Computed properties are also able to operate on and return Models and Collections.</p>
 
     <p>An example returning a Model</p>
