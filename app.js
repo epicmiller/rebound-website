@@ -51,7 +51,7 @@
     defaultSrc: ["'self'"],
     scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", "platform.twitter.com", "www.google-analytics.com"],
     styleSrc: ["'self'", "'unsafe-inline'"],
-    imgSrc: ["'self'", 'data:', "https://camo.githubusercontent.com", "http://camo.githubusercontent.com"],
+    imgSrc: ["'self'", 'data:', "https://camo.githubusercontent.com", "http://camo.githubusercontent.com", "www.google-analytics.com"],
     connectSrc: ["'self'", "https://api.github.com", "http://api.github.com"],
     fontSrc: ["'self'"],
     objectSrc: ["'self'"],
