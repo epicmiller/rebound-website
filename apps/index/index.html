@@ -97,6 +97,12 @@
             easing: 'easeInOutCubic', // Easing pattern to use
             updateURL: false // Boolean. Whether or not to update the URL with the anchor hash on scroll
         });
+        // Set up Google Analytics Tracking
+        Rebound.router.on('route', function(route, params){
+          if(route !== 'wildcardRoute'){
+            return ga('send', 'pageview', Backbone.history.fragment);
+          }
+        });
       },
 
       attachedCallback: function(){
