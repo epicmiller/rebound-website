@@ -49,7 +49,7 @@
   app.use(helmet.xssFilter()); // ie9+ and chrome xss busting
   app.use(helmet.csp({
     defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", "platform.twitter.com"],
+    scriptSrc: ["'self'", "'unsafe-eval'", "'unsafe-inline'", "platform.twitter.com", "www.google-analytics.com"],
     styleSrc: ["'self'", "'unsafe-inline'"],
     imgSrc: ["'self'", 'data:', "https://camo.githubusercontent.com", "http://camo.githubusercontent.com"],
     connectSrc: ["'self'", "https://api.github.com", "http://api.github.com"],
