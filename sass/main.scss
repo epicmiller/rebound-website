@@ -1,6 +1,11 @@
 @import "lib";
 @import "prism";
 
+.__slackin {
+  z-index: 9999;
+  margin-left: 9px;
+}
+
 html {
   position: absolute;
   top: 0;
